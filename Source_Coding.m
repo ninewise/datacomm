@@ -14,10 +14,57 @@ classdef Source_Coding
             N = numel(alphabet);
             rel_freq = rel_freq/sum(rel_freq);
             
+            %% A. Declareren en initialiseren van enkele variabelen
+            % Cell array die alle indices van elk teken in het alphabet bijhoudt
+            % in apparte cell arrays
+            alphabet_indices = cell(1, N);
+
+            for i = 1:N
+                alphabet_indices{i} = {i};
+            end
+
+            % Cell array die de voorlopige codes voor elke teken bijhoudt
+            codes = cell(1,N);
+
+            %% B. Vormen van de Huffman codes
+
+            % Loop zolang er meer dan 1 elementen in alphabet_indices zit 
+            % (dus zolang we niet aan de "top van de boom" zitten
+            while (length(alphabet_indices) > 1)
+                %% 1. Sorteer freq. en de de overeenkomstige indices in alphabet_indices
+                [rel_freq_sorted, sorted_indices] = sort(rel_freq);
+
+                rel_freq = rel_freq_sorted;
+                alphabet_indices = alphabet_indices(sorted_indices);
+
+                %% 2. Ken codes toe aan de 2 symbolen met de kleinste frequenties
+                for i = 1:length(alphabet_indices{1})
+                    indices = alphabet_indices{1}{i};
+
+                    for j = indices
+                        codes(j) = {[0 codes{j}]};
+                    end
+                end
+
+                for i = 1:length(alphabet_indices{2})
+                    indices = alphabet_indices{2}{i};
+
+                    for j = indices
+                        codes(j) = {[1 codes{j}]};
+                    end
+                end
+
+                %% 3. Groepeer de 2 kleinste symbolen samen en tel hun freqs op
+                rel_freq(2) = rel_freq(1) + rel_freq(2);
+                rel_freq(1) = [];
+
+                alphabet_indices{2} = [alphabet_indices{1} alphabet_indices{2}];
+                alphabet_indices(1) = [];
+            end
             
             %output the codewords
             % example: codewords = {[0], [1 1 0], [1 0], [1 1 1]};
-            new_symbols = cell(1, N);
+            new_symbols = codes;
             
         end
 
