@@ -1,4 +1,4 @@
-datacomm
-========
+Datacommunicatie
+================
 
-The datacommunication project
+The datacommunication project.
