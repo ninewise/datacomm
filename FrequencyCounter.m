@@ -7,9 +7,22 @@ classdef FrequencyCounter
     methods(Static)
         
         function [] = main()
-            darth_vader = imread('darthvader.bmp', 'bmp');
+            darth_vader = imread('darthvader.bmp');
             freqs = FrequencyCounter.calculate_frequencies(darth_vader, 2, 2);
             freqs
+        end
+        
+        function xfile_huffman_averagebits()
+            load('Xfile3.mat');
+            for K = 1:1:10
+                K
+                freqs = FrequencyCounter.calculate_frequencies(bitsrc, 1, K);
+                for i = 0:1:bitshift(1,K-1)
+                    alf(i+1) = i;
+                end
+                alphabet = dec2bin(alf,K-1);
+                Source_Coding.create_codebook(alphabet,freqs)
+            end            
         end
         
         function freqs = calculate_frequencies(matrix, blockheight, blockwidth)
