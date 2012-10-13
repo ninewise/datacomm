@@ -7,7 +7,7 @@ classdef FrequencyCounter
     methods(Static)
         
         function [] = main()
-            darth_vader = imread('H:\MATLAB\darthvader.bmp', 'bmp');
+            darth_vader = imread('darthvader.bmp', 'bmp');
             freqs = FrequencyCounter.calculate_frequencies(darth_vader, 2, 2);
             freqs
         end
