@@ -64,7 +64,7 @@ classdef Source_Coding
             
             %output the codewords
             % example: codewords = {[0], [1 1 0], [1 0], [1 1 1]};
-            new_symbols = codes;
+            codewords = codes;
             
         end
 
