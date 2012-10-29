@@ -5,7 +5,7 @@ classdef vraag1_4
         
         function [] = main()
             load('Xfile3.mat');
-            for K = 1:1:10
+            for K = 1:1:15
                 
                 % Reken frequenties uit van macroblokken
                 freqs = FrequencyCounter.calculate_frequencies(bitsrc, 1, K);
@@ -30,7 +30,7 @@ classdef vraag1_4
             
             % Plot resultaat
             plot(avg_codebit);
-            title(['Gemiddeld aantal codebits voor macroblok lengte 1..10',10]);
+            title(['Gemiddeld aantal codebits voor macroblok lengte 1..10',15]);
             xlabel('Lengte macroblok');
             ylabel('Gemiddeld aantal codebits per bronsymbool');
         end

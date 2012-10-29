@@ -23,6 +23,7 @@ classdef vraag1_3
         end
         
         function entropy = calcEntropy(freqs)
+            freqs(freqs==0)=[];%strip de 0 elementen om geen NaN te bekomen
             [h w]=size(freqs);
             presum=zeros(1,w);
             for i=1:w
