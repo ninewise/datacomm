@@ -1,8 +1,9 @@
 \documentclass[]{article}
 \usepackage[a4paper]{geometry}
 \usepackage{graphicx}
-\usepackage{titling}
+%\usepackage{titling}
 \usepackage{listings}
+\usepackage[dutch]{babel}
 \begin{document}
 
 \title{Project Datacommunicatie}
@@ -31,13 +32,50 @@
         Zo wordt het macroblock \texttt{[1 0;0 1]} omgezet naar
         \texttt{1 0 0 1} en krijgt het nummer $9$.
 
-        Handmatige huffman:
+        Met deze frequenties kunnen we de huffman-boom opstellen. Deze
+        vindt u in figuur \ref{fig:manual:huffman}. Door aan de
+        vertakking met het kleinste deelgewicht een nul toe te kennen,
+        en een \'e\'en anders, bekomen we de codering in tabel
+        \ref{tbl:manual:huffman}.
 
-        \includegraphics[width=\textwidth]{manual_huffman.png}
+        \begin{figure}
+            \centering
+            \includegraphics[width=\textwidth]{manual_huffman.png}
+            \label{fig:manual:huffman}
+            \caption{Huffmanboom, opgesteld bij de frequenties uit
+            vraag 1.}
+        \end{figure}
+
+        \begin{table}
+            \centering
+            \begin{tabular}{lr@{.}lr}
+                \textbf{Macrosymbool} & \multicolumn{2}{l}{\textbf{Rel. freq.}} &
+                \textbf{Codewoord} \\
+                \hline
+                \texttt{0000} & 54 & 43 \% & \texttt{1} \\
+                \texttt{0001} &  0 & 24 \% & \texttt{000101} \\
+                \texttt{0010} &  0 & 31 \% & \texttt{001111} \\
+                \texttt{0011} &  0 & 40 \% & \texttt{00001} \\
+                \texttt{0100} &  0 & 19 \% & \texttt{000000} \\
+                \texttt{0101} &  0 & 45 \% & \texttt{00100} \\
+                \texttt{0110} &  0 & 01 \% & \texttt{00000100} \\
+                \texttt{0111} &  0 & 26 \% & \texttt{001101} \\
+                \texttt{1000} &  0 & 20 \% & \texttt{000100} \\
+                \texttt{1001} &  0 & 01 \% & \texttt{00000101} \\
+                \texttt{1010} &  0 & 44 \% & \texttt{00011} \\
+                \texttt{1011} &  0 & 29 \% & \texttt{001110} \\
+                \texttt{1100} &  0 & 45 \% & \texttt{00101} \\
+                \texttt{1101} &  0 & 25 \% & \texttt{001100} \\
+                \texttt{1110} &  0 & 18 \% & \texttt{0000011} \\
+                \texttt{1111} & 41 & 89 \% & \texttt{01} \\
+            \end{tabular}
+            \label{tbl:manual:huffman}
+            \caption{De Huffmancode bij vraag 1.}
+        \end{table}
 
     \end{subsection}
     
-        \begin{subsection}*{Vraag 3}
+    \begin{subsection}*{Vraag 3}
 
         We verkrijgen volgende grafiek bij het uitvoeren van
         \texttt{vraag1\_3.m}:
