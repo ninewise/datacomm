@@ -1,10 +1,15 @@
 \documentclass[]{article}
 \usepackage[a4paper]{geometry}
-\usepackage{graphicx}
-%\usepackage{titling} Commented, want we gebruiken dit eigenlijk niet?
-\usepackage{listings}
-
 \usepackage[dutch]{babel}
+
+% Floating figuren.
+\usepackage{graphicx}
+
+% Commented, want we gebruiken dit eigenlijk niet?
+%\usepackage{titling}
+
+% Om code en dergelijke te plaatsen.
+\usepackage{listings}
 
 % Wiskundige formules in LaTeX <3
 \usepackage{amsmath}
@@ -12,14 +17,17 @@
 \usepackage{amsfonts}
 
 % Ik vind het nu eenmaal mooier zo.
-\setlength{\parindent}{14pt}
-\setlength{\parskip}{0pt}
-
-\begin{document}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{14pt}
 
 \title{Project Datacommunicatie}
-\author{Enver Bral \\ Fr\'ed\'erique De Baerdemaeker \\ Ruben Taelman \\ Felix Van der Jeugt}
+\author{Enver Bral \\
+        Fr\'ed\'erique De Baerdemaeker \\
+        Ruben Taelman \\
+        Felix Van der Jeugt}
 \date{Academiejaar 2012 - 2013}
+
+\begin{document}
 \maketitle
 
 \begin{section}*{Broncodering}
@@ -38,22 +46,21 @@
 
         Dit zijn de relatieve frequenties voor elk macroblok. De
         macroblokken zijn hier als volgt genummerd: We zetten de rijen
-        van het macroblok na elkaar, en lezen als een binair getal.
-
-        Zo wordt het macroblock \texttt{[1 0;0 1]} omgezet naar
+        van het macroblok na elkaar, en lezen als een binair getal.  Zo
+        wordt het macroblock \texttt{[1 0;0 1]} omgezet naar
         \texttt{1 0 0 1} en krijgt het nummer $9$.
 
         Met deze frequenties kunnen we de huffman-boom opstellen. Deze
-        vindt u in figuur \ref{fig:manual:huffman}. Door aan de
+        vindt u in Figuur~\ref{fig:manual_huffman}. Door aan de
         vertakking met het kleinste deelgewicht een nul toe te kennen,
-        en een \'e\'en anders, bekomen we de codering in tabel
-        \ref{tbl:manual:huffman}.
+        en een \'e\'en anders, bekomen we de codering in
+        Tabel~\ref{tab:manual_huffman}.
 
         \begin{figure}
             \centering
             \includegraphics[width=\textwidth]{manual_huffman.png}
-            \label{fig:manual:huffman}
             \caption{Huffmanboom, opgesteld bij de frequenties uit
+            \label{fig:manual_huffman}
             vraag 1.}
         \end{figure}
 
@@ -80,8 +87,8 @@
                 \texttt{1110} &  0 & 18 \% & \texttt{0000011} \\
                 \texttt{1111} & 41 & 89 \% & \texttt{01} \\
             \end{tabular}
-            \label{tbl:manual:huffman}
             \caption{De Huffmancode bij vraag 1.}
+            \label{tab:manual_huffman}
         \end{table}
 
         Nu kunnen we het gemiddeld aantal codebits per bronsymbool
@@ -103,37 +110,54 @@
         Huffman codering.
 
     \end{subsection}
-    
+
     \begin{subsection}*{Vraag 3}
 
         We verkrijgen volgende grafiek bij het uitvoeren van
         \texttt{vraag1\_3.m}:
 
         \includegraphics{vraag1_3.png}
-		Hierop kunnen we de entropie zien van de macrosymbolen van grootte K. De referentielijn is hier een rechte, dit is logisch aangezien de entropie maximaal is wanneer alle symbolen met gelijke kans voorkomen.
-		Vanaf K=8 komen er symbolen voor die met frequentie 0 voorkomen, dus hier is de log2 -oneindig, dus de entropie wordt hier ook oneindig groot.
+
+        Hierop kunnen we de entropie zien van de macrosymbolen van
+        grootte K. De referentielijn is hier een rechte, dit is logisch
+        aangezien de entropie maximaal is wanneer alle symbolen met
+        gelijke kans voorkomen.
+        Vanaf K=8 komen er symbolen voor die met frequentie 0
+        voorkomen, dus hier is de log2 -oneindig, dus de entropie wordt
+        hier ook oneindig groot.
 
     \end{subsection}
 
     \begin{subsection}*{Vraag 4}
-	
+
         We verkrijgen volgende grafiek bij het uitvoeren van
         \texttt{vraag1\_4.main()}:
 
-       \includegraphics[scale=0.75]{vraag1_4.png} \\
-		Hierop kunnen we het gemiddelde aantal codebits per bronsymbool (gebruikmakend van huffmancodering) voor macrosymbolen met grootte K=1..10 en de bijhorende onder/bovengrens.
-		% We nemen best 3 bits samen om het bestand optimaal te comprimeren, we zouden ook eventueel 6 kunnen nemen met als gevolg dat het coderen aanzienlijk trager verloopt.
-		% We krijgen een compressiefactor van TBA
-		
-		\end{subsection}
+        \includegraphics[scale=0.75]{vraag1_4.png}
 
-      	\begin{subsection}*{Vraag 7}
-        		%(zie vraag 1_7.txt)
+        Hierop kunnen we het gemiddelde aantal codebits per bronsymbool
+        (gebruikmakend van huffmancodering) voor macrosymbolen met
+        grootte K=1..10 en de bijhorende onder/bovengrens.
+
+        % We nemen best 3 bits samen om het bestand optimaal te
+        % comprimeren, we zouden ook eventueel 6 kunnen nemen met als
+        % gevolg dat het coderen aanzienlijk trager verloopt.
+        % We krijgen een compressiefactor van TBA
+		
+    \end{subsection}
+
+    \begin{subsection}*{Vraag 7}
+
+        %(zie vraag 1_7.txt)
+
    	\end{subsection}
 
 \end{section}
+
 \begin{section}*{Kanaalcodering}
 \end{section}
+
 \begin{section}*{Volledig systeem}
 \end{section}
+
 \end{document}
