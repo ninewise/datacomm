@@ -16,6 +16,10 @@
 \usepackage{amssymb}
 \usepackage{amsfonts}
 
+% MATRICES! :D
+\usepackage{amsmath}
+\setcounter{MaxMatrixCols}{25} 
+
 % Ik vind het nu eenmaal mooier zo.
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{14pt}
@@ -178,6 +182,24 @@
         \begin{eqnarray*}
         	& foutdetecterend vermogen = d-1 = 2 \\
         	& foutcorrigerend vermogen = floor((d-1)/2) = 1 \\
+        \end{eqnarray*}
+        
+        De checkveelterm kunnen we bepalen aan de hand van volgende vergelijking:
+        \begin{eqnarray*}
+        	x^{15} + 1 &=& h(x) * g(x)
+        \end{eqnarray*}
+        We weten al $g(x)$, dus we kunnen met behulp van een Euclidische deling $h(x)$ 
+        zoeken. We bekomen:
+        \begin{eqnarray*}
+        	h(x) &=& x^{11} + x^8 + x^7 + x^5 + x^3 + x^2 + x + 1 \\
+        \end{eqnarray*}
+        
+        Als de matrices bekomen we:
+        \begin{eqnarray*}
+        G &=&\input{vraag2_1/generatormatrix.tex}\\
+        H &=&\input{vraag2_1/checkmatrix.tex}\\
+        G_{sys} &=&\input{vraag2_1/syst_generatormatrix.tex}\\
+        H_{sys} &=&\input{vraag2_1/syst_checkmatrix.tex}\\
         \end{eqnarray*}
 
    	\end{subsection}
