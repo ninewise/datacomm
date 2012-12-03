@@ -1,22 +1,15 @@
-all: clean vraag2_1_all verslag.pdf
+all: verslag.pdf
 	
-vraag2_1_all: vraag2_1/generatormatrix.tex vraag2_1/checkmatrix.tex vraag2_1/syst_generatormatrix.tex vraag2_1/syst_checkmatrix.tex
+verslag.pdf: verslag.tex
+	pdflatex $<
 
-verslag.pdf:
-	pdflatex verslag.tex
+verslag.tex: vraag2_1/generatormatrix.tex vraag2_1/checkmatrix.tex vraag2_1/syst_generatormatrix.tex vraag2_1/syst_checkmatrix.tex
 
 clean:
-	rm vraag2_1/*.tex
-	rm verslag.pdf
+	rm -f vraag2_1/*.tex
+	rm -f verslag.pdf
 
-vraag2_1/generatormatrix.tex:
-	./csv2tex.sh vraag2_1/generatormatrix.csv > vraag2_1/generatormatrix.tex
-
-vraag2_1/checkmatrix.tex:
-	./csv2tex.sh vraag2_1/checkmatrix.csv > vraag2_1/checkmatrix.tex
-
-vraag2_1/syst_generatormatrix.tex:
-	./csv2tex.sh vraag2_1/syst_generatormatrix.csv > vraag2_1/syst_generatormatrix.tex
-
-vraag2_1/syst_checkmatrix.tex:
-	./csv2tex.sh vraag2_1/syst_checkmatrix.csv > vraag2_1/syst_checkmatrix.tex
+vraag2_1/%.tex: vraag2_1/%.csv
+	echo '\begin{pmatrix}' > $@
+	cat $< | sed -e 's/,/ \& /g' -e 's/.*/& \\\\/' >> $@
+	echo '\end{pmatrix}' >> $@
