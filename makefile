@@ -10,6 +10,6 @@ clean:
 	rm -f verslag.pdf
 
 vraag2_1/%.tex: vraag2_1/%.csv
-	echo '\begin{pmatrix}' > $@
+	echo '\\begin{pmatrix}' > $@
 	cat $< | sed -e 's/,/ \& /g' -e 's/.*/& \\\\/' >> $@
-	echo '\end{pmatrix}' >> $@
+	echo '\\end{pmatrix}' >> $@
