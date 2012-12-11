@@ -16,8 +16,20 @@ classdef Channel_Coding
             % door een geheel aantal codewoorden
             bitstring = [bitstring zeros(1, N_codewords*11-N)];
 
+            % De bitstring in informatiewoorden splitsen. Nu is elke rij van de
+            % matrix bitmatrix een informatiewoord, en kunnen we de
+            % oorspronkelijke string lezen volgens de normale leesrichting.
+            bitmatrix = vec2mat(bitstring, 11);
+
+            % Door de (N_codewords x 11) bitmatrix te vermenigvuldigen met de
+            % (11 x 15) generatormatrix, bekomen we een gelijkvormige matrix,
+            % maar dan nu met codewoorden.
+            matrixend = mod(bitmatrix * vraag2_1.genereerGeneratorMatrix(15, 11, [1 1 0 0 1 0 0 0 0 0 0 0 0 0 0]), 2);
                        
-            
+            % Nu moeten we gewoon nog de matrix matrixend lezen, en we bekomen
+            % onze bitenc.
+            bitenc = reshape(matrixend,1,[]);
+
             % output: de geencodeerde bits: lengte 15*N_codewords
             % bitenc = zeros(1, 15*N_codewords);
             
