@@ -69,18 +69,49 @@ classdef Source_Coding
         end
 
         function codewords = create_canonical_codebook(alphabet, lengths)
-            % Functie die de Cononical Huffmancode opstelt voor gegeven alfabet en
+            % Functie die de Canonical Huffmancode opstelt voor gegeven alfabet en
             % codelengtes
             % input:
             % alphabet: 1xN cell array vb alphabet = {'A', 'B', 'C', 'D'}
             % lengths: lengtes van elk codewoord: [1 3 2 3];
             
             N = numel(alphabet);
+      
+            sortedlengths = sort(lengths);                           
+            % Maak canonical huffmancode
+            sortedcodewords = cell(1,N);
+            sortedcodewords(1,1) = {[0]};
+            curlength = 1;
+                        
+            for i = 2:N
+                % Zet binaire cellarray om naar nummer en tel er 1 bij op
+                array = sortedcodewords{1,i-1};
+                number = bin2dec(sprintf('%-1d',array)) + 1;
+                
+                % Wordt het aantal codebits groter?
+                if (curlength < sortedlengths(i))
+                    % Voeg 0 toe tot juiste aantal codebits bereikt is
+                    number = bitsll(number,sortedlengths(i)-curlength);
+                    curlength = sortedlengths(i);
+                end
+                % Converteer decimaal terug naar een binaire cellarray
+                sortedcodewords(1,i) = {de2bi(number, 'left-msb')};
+            end
             
             
             % output the codewords
             % example: codewords = {[0], [1 1 0], [1 0], [1 1 1]};
             codewords = cell(1, N);
+            for i = 1:N
+                for j = 1:N
+                   if(lengths(j) == sortedlengths(i))
+                       codewords(1,i) = sortedcodewords(1,j);
+                       % Truc om deze waarde in het vervolg over te slaan
+                       lengths(j) = -1;
+                       break
+                   end
+                end
+            end
         end
       
         
