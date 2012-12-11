@@ -16,11 +16,35 @@ classdef Channel_Coding
             % door een geheel aantal codewoorden
             bitstring = [bitstring zeros(1, N_codewords*11-N)];
 
-                       
+            generator_matrix = [
+                1 0 0 0 0 0 0 0 0 0 0 1 1 0 0 ;
+                0 1 0 0 0 0 0 0 0 0 0 0 1 1 0 ;
+                0 0 1 0 0 0 0 0 0 0 0 0 0 1 1 ;
+                0 0 0 1 0 0 0 0 0 0 0 1 1 0 1 ; 
+                0 0 0 0 1 0 0 0 0 0 0 1 0 1 0 ;
+                0 0 0 0 0 1 0 0 0 0 0 0 1 0 1 ;
+                0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 ;
+                0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 ; 
+                0 0 0 0 0 0 0 0 1 0 0 1 1 1 1 ;
+                0 0 0 0 0 0 0 0 0 1 0 1 0 1 1 ;
+                0 0 0 0 0 0 0 0 0 0 1 1 0 0 1 ;   
+            ];
+        
+            % Plaats de verschillende informatiewoorden op verschillende
+            % rijen
+            info_words = reshape(bitstring, [], N_codewords)';
             
+            % Vervang elke rij (elk informatiewoord)
+            % door zijn codewoord
+            for i = 1:N_codewords
+                bitenc(i,:) = info_words(i,:) * generator_matrix;
+            end
+
             % output: de geencodeerde bits: lengte 15*N_codewords
-            % bitenc = zeros(1, 15*N_codewords);
+            % example: bitenc = zeros(1, 15*N_codewords);
             
+            % zet alles terug op 1 rij
+            bitenc = reshape(bitenc', 1, [])
         end
 
         function bitdec = Ham_decode(bitenc)
@@ -39,7 +63,7 @@ classdef Channel_Coding
                        
             
             % output: de gedecodderde bits: lengte 11*N_codewords
-            % bitdec = zeros(1, 11*N_codewords);
+            bitdec = zeros(1, 11*N_codewords);
         end
 
         % Functies voor de productcode
@@ -58,8 +82,35 @@ classdef Channel_Coding
 
             % Product code hier
             
+            % 1. Encodeer met Hamming code
+            
+            % Bereken de hamming codes voor alle 8 groepen van codewoorden
+            ham_codes = Channel_Coding.Ham_encode(bitstring(:));
+            
+            % Herschaal zodat we telkens groepen van 8 codewoorden op 1
+            % rij in de matrix hebben staan
+            ham_codes = reshape(ham_codes, [], N_codewords)';
+           
+            % 2. Voeg pariteitsbits toe aan de output
+            
+            % Tel telkens de elementen in dezelfde "kolom" op
+            % om zo de pariteitsbits te bekomen voor elk geencodeerd
+            % codewoord
+            % par_bits = zeros(N_codewords*8, 15);
+            size(ham_codes)
+            for i = 1:N_codewords
+                for j = 1:15
+                    par_bits(i,j) = sum( ham_codes(i, j:15:(8*15)) );
+                end
+            end
+            
+            bitenc = horzcat(ham_codes, par_bits);
+            
             % output:
             % bitenc = zeros(1, (8+1)*15*N_codewords);
+            
+            % zet alles terug op 1 rij
+            bitenc = reshape(bitenc', 1, [])
             
         end
         
