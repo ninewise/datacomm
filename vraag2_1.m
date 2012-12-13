@@ -12,7 +12,7 @@ classdef vraag2_1
             n_check=n;
             k_check=n-k;
             check_generator=[1 1 1 1 0 1 0 1 1 0 0 1 0 0 0];% x^11 + x^8 + x^7 + x^5 + x^3 + x^2 + x + 1
-            [check_codewoorden rows]=vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
+            %[check_codewoorden rows]=vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
             
             generatormatrix=vraag2_1.genereerGeneratorMatrix(n, k, generator);
             syst_generatormatrix=vraag2_1.genereerSystGeneratorMatrix(n, k, codewoorden);

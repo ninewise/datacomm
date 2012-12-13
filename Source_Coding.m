@@ -86,7 +86,7 @@ classdef Source_Coding
             for i = 2:N
                 % Zet binaire cellarray om naar nummer en tel er 1 bij op
                 array = sortedcodewords{1,i-1};
-                number = bin2dec(sprintf('%-1d',array)) + 1;
+                number = bi2de(array,'left-msb') + 1;
                 
                 % Wordt het aantal codebits groter?
                 if (curlength < sortedlengths(i))
