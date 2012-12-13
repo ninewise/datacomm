@@ -103,7 +103,7 @@ classdef Channel_Coding
             coset_leaders = syndroomtabel(:,2);
 
             % Nu zoeken we elk syndroom op in de coset_leaders matrix.
-            bitdec = cell2mat(cellfun(@(i) coset_leaders(bi2de(i, 'left-msb') + 1), syndromes));
+            bitdec = cell2mat(cellfun(@(i) coset_leaders(bi2de(i, 'left-msb') + 1), syndromes, 'UniformOutput', false));
             
             % output: de gedecodderde bits: lengte 11*N_codewords
             bitdec = mod(matrixenc + bitdec, 2);
