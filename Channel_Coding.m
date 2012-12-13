@@ -92,21 +92,22 @@ classdef Channel_Coding
 
             % Door de matrixenc te vermenigvuldigen met de checkmatrix, bekomen
             % we een matrix van syndromen.
-            syndromes = mod(matrixenc * transpose(syst_checkmatrix), 2);
+            syndromes_ = mod(matrixenc * transpose(syst_checkmatrix), 2);
 
             % We zetten deze lijst om in een cellarray, zodat we ipv met een
             % for-lus met cellfun kunnen werken.
-            syndromes = mat2cell(syndromes);
+            syndromes = {syndromes_};
 
             % We vragen de syndroomtabel van Jimmy, welke de cosetleiders in
             % in matrix zijn, met als indices de syndromen.
             coset_leaders = syndroomtabel(:,2);
 
             % Nu zoeken we elk syndroom op in de coset_leaders matrix.
-            bitdec = cell2mat(cellfun(@(i) coset_leaders(bi2de(i, 'left-msb') + 1), syndromes, 'UniformOutput', false));
+            x = cellfun(@(i){coset_leaders(bi2de(i, 'left-msb') + 1)}, syndromes);
+            bitdec = cell2mat(x{1,1});
             
             % output: de gedecodderde bits: lengte 11*N_codewords
-            bitdec = mod(matrixenc + bitdec, 2);
+            bitdec = mod(matrixenc - bitdec, 2);
         end
 
         % Functies voor de productcode
@@ -170,7 +171,6 @@ classdef Channel_Coding
                 error('input is geen geheel aantal codewoorden.');
             end
             
-            decoded=Channel_Coding.Ham_decode(bitenc) % error hier....
             
             % errorcorrectie hier
             
