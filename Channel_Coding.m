@@ -53,11 +53,11 @@ classdef Channel_Coding
             % Door de (N_codewords x 11) bitmatrix te vermenigvuldigen met de
             % (11 x 15) generatormatrix, bekomen we een gelijkvormige matrix,
             % maar dan nu met codewoorden.
-            matrixend = mod(bitmatrix * vraag2_1.genereerGeneratorMatrix(15, 11, [1 1 0 0 1 0 0 0 0 0 0 0 0 0 0]), 2);
+            matrixenc = mod(bitmatrix * vraag2_1.genereerGeneratorMatrix(15, 11, [1 1 0 0 1 0 0 0 0 0 0 0 0 0 0]), 2);
                        
             % Nu moeten we gewoon nog de matrix matrixend lezen, en we bekomen
             % onze bitenc.
-            bitenc = reshape(matrixend,1,[]);
+            bitenc = reshape(matrixenc,1,[]);
 
             % output: de geencodeerde bits: lengte 15*N_codewords
             % example: bitenc = zeros(1, 15*N_codewords);
@@ -76,10 +76,25 @@ classdef Channel_Coding
                 error('input is geen geheel aantal codewoorden.');
             end
                         
-                       
+            % We splitsen de vector bitenc op in codewoorden.
+            matrixenc = vec2mat(bitenc, 15);
+
+            % Door de matrixenc te vermenigvuldigen met de checkmatrix, bekomen
+            % we een matrix van syndromen.
+            syndromes = mod(matrixenc * vraag2_1.genereerSystCheckMatrix(15, 11, [1 1 0 0 1 0 0 0 0 0 0 0 0 0 0]), 2);
+
+            % We zetten deze lijst om in een cellarray, zodat we ipv met een
+            % for-lus met cellfun kunnen werken.
+            syndromes = mat2cell(syndromes);
+
+            % We vragen de syndroomtabel van Jimmy, welke de cosetleiders in
+            % in matrix zijn, met als indices de syndromen.
+            coset_leaders = genereerSyndroomTabel(15, 11, [1 1 0 0 1 0 0 0 0 0 0 0 0 0 0]);
+
+            % Nu zoeken we elk syndroom op in de coset_leaders matrix.
+            bitdec = cell2mat(cellfun(@(i) coset_leaders(bi2de(i, 'left-msb')), syndromes));
             
             % output: de gedecodderde bits: lengte 11*N_codewords
-            bitdec = zeros(1, 11*N_codewords);
         end
 
         % Functies voor de productcode
