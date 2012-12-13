@@ -170,6 +170,7 @@ classdef Channel_Coding
                 error('input is geen geheel aantal codewoorden.');
             end
             
+            decoded=Channel_Coding.Ham_decode(bitenc) % error hier....
             
             % errorcorrectie hier
             
