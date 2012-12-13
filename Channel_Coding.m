@@ -75,13 +75,24 @@ classdef Channel_Coding
             if(mod(N, 15) ~= 0)
                 error('input is geen geheel aantal codewoorden.');
             end
+            
+                        n=15;
+            k=11;
+            generator=[1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];% x^4 + x + 1
+            [infobits rows]=vraag2_1.genereerInformatieBits(k);
+            woorden = vraag2_1.genereerInformatieBits(n);
+            [codewoorden rows] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
+            syst_generatormatrix = vraag2_1.genereerSystGeneratorMatrix(15, 11, codewoorden);
+            syst_checkmatrix=vraag2_1.genereerSystCheckMatrix(n, k, syst_generatormatrix);
+            decodeertabel = vraag2_2.genereerDecodeerTabel(codewoorden,woorden, n, k);
+            syndroomtabel=vraag2_2.genereerSyndroomTabel(decodeertabel, syst_checkmatrix);
                         
             % We splitsen de vector bitenc op in codewoorden.
             matrixenc = vec2mat(bitenc, 15);
 
             % Door de matrixenc te vermenigvuldigen met de checkmatrix, bekomen
             % we een matrix van syndromen.
-            syndromes = mod(matrixenc * vraag2_1.genereerSystCheckMatrix(15, 11, [1 1 0 0 1 0 0 0 0 0 0 0 0 0 0]), 2);
+            syndromes = mod(matrixenc * transpose(syst_checkmatrix), 2);
 
             % We zetten deze lijst om in een cellarray, zodat we ipv met een
             % for-lus met cellfun kunnen werken.
@@ -89,12 +100,13 @@ classdef Channel_Coding
 
             % We vragen de syndroomtabel van Jimmy, welke de cosetleiders in
             % in matrix zijn, met als indices de syndromen.
-            coset_leaders = genereerSyndroomTabel(15, 11, [1 1 0 0 1 0 0 0 0 0 0 0 0 0 0]);
+            coset_leaders = syndroomtabel(:,2);
 
             % Nu zoeken we elk syndroom op in de coset_leaders matrix.
-            bitdec = cell2mat(cellfun(@(i) coset_leaders(bi2de(i, 'left-msb')), syndromes));
+            bitdec = cell2mat(cellfun(@(i) coset_leaders(bi2de(i, 'left-msb') + 1), syndromes));
             
             % output: de gedecodderde bits: lengte 11*N_codewords
+            bitdec = mod(matrixenc + bitdec, 2);
         end
 
         % Functies voor de productcode
