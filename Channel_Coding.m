@@ -104,10 +104,17 @@ classdef Channel_Coding
 
             % Nu zoeken we elk syndroom op in de coset_leaders matrix.
             x = cellfun(@(i){coset_leaders(bi2de(i, 'left-msb') + 1)}, syndromes);
-            bitdec = cell2mat(x{1,1});
+            transmission_errors = cell2mat(x{1,1});
+            
+            % Nu kunnen we de bedoelde codewoorden bepalen.
+            codewords = mod(matrixenc - transmission_errors, 2);
+            
+            % Dan rest ons slechts het omzetten van die codewoorden in hun
+            % informatiewoorden:
+            y = cellfun(@(i){infobits(ismember(codewoorden, i, 'rows'),:)}, {codewords});
+            bitdec = cell2mat(y);
             
             % output: de gedecodderde bits: lengte 11*N_codewords
-            bitdec = mod(matrixenc - bitdec, 2);
         end
 
         % Functies voor de productcode
