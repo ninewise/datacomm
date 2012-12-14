@@ -81,9 +81,9 @@ classdef vraag2_2
         end
         
         % Een 'iets' snellere versie voor syndroomtabel te maken (by Ruben)
-        function [cosetleiders syndromen] = genereerSyndroomTabelImproved(syst_checkmatrix)
+        function [cosetleiders syndromen] = genereerSyndroomTabelImproved(n, syst_checkmatrix)
             cosetleiders=[zeros(1,n); eye(n)];
-            syndromen=firstcosets*syst_checkmatrix';
+            syndromen=cosetleiders*syst_checkmatrix';
         end
     end
 end
