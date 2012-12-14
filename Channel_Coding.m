@@ -88,27 +88,20 @@ classdef Channel_Coding
             [codewoorden rows] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
             syst_generatormatrix = vraag2_1.genereerSystGeneratorMatrix(15, 11, codewoorden);
             syst_checkmatrix=vraag2_1.genereerSystCheckMatrix(n, k, syst_generatormatrix);
-            decodeertabel = vraag2_2.genereerDecodeerTabel(codewoorden,woorden, n, k);
-            syndroomtabel=vraag2_2.genereerSyndroomTabel(decodeertabel, syst_checkmatrix);
                         
             % We splitsen de vector bitenc op in codewoorden.
             matrixenc = vec2mat(bitenc, 15);
 
             % Door de matrixenc te vermenigvuldigen met de checkmatrix, bekomen
             % we een matrix van syndromen.
-            syndromes_ = mod(matrixenc * transpose(syst_checkmatrix), 2);
+            syndromes = mod(matrixenc * transpose(syst_checkmatrix), 2);
 
-            % We zetten deze lijst om in een cellarray, zodat we ipv met een
-            % for-lus met cellfun kunnen werken.
-            syndromes = {syndromes_};
-
-            % We vragen de syndroomtabel van Jimmy, welke de cosetleiders in
-            % in matrix zijn, met als indices de syndromen.
-            coset_leaders = syndroomtabel(:,2);
+            % We vragen de syndroomtabel van Jimmy.
+            [cleaders s] = vraag2_2.genereerSyndroomTabelImproved(n, syst_checkmatrix);
 
             % Nu zoeken we elk syndroom op in de coset_leaders matrix.
-            x = cellfun(@(i){coset_leaders(bi2de(i, 'left-msb') + 1)}, syndromes);
-            transmission_errors = cell2mat(x{1,1});
+            x = cellfun(@(i){cleaders(ismember(s, i', 'rows'),:)}, num2cell(syndromes', 1));
+            transmission_errors = cell2mat(x');
             
             % Nu kunnen we de bedoelde codewoorden bepalen.
             codewords = mod(matrixenc - transmission_errors, 2);
