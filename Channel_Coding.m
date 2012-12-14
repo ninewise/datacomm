@@ -53,12 +53,16 @@ classdef Channel_Coding
             % Door de (N_codewords x 11) bitmatrix te vermenigvuldigen met de
             % (11 x 15) generatormatrix, bekomen we een gelijkvormige matrix,
             % maar dan nu met codewoorden.
-            matrixenc = mod(bitmatrix * vraag2_1.genereerGeneratorMatrix(15, 11, [1 1 0 0 1 0 0 0 0 0 0 0 0 0 0]), 2);
+            n = 15; k = 11; generator = [1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];
+            [infobits rows]=vraag2_1.genereerInformatieBits(k);
+            [codewoorden rows] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
+            x = cellfun(@(i){codewoorden(ismember(infobits, i', 'rows'),:)}, num2cell(bitmatrix', 1));
+            matrixenc = cell2mat(x);
                        
             % Nu moeten we gewoon nog de matrix matrixend lezen, en we bekomen
             % onze bitenc.
-            bitenc = reshape(matrixenc,1,[]);
-
+            bitenc = matrixenc';
+            bitenc = bitenc(:)';
             % output: de geencodeerde bits: lengte 15*N_codewords
             % example: bitenc = zeros(1, 15*N_codewords);
         end
@@ -76,7 +80,7 @@ classdef Channel_Coding
                 error('input is geen geheel aantal codewoorden.');
             end
             
-                        n=15;
+            n=15;
             k=11;
             generator=[1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];% x^4 + x + 1
             [infobits rows]=vraag2_1.genereerInformatieBits(k);
@@ -104,10 +108,17 @@ classdef Channel_Coding
 
             % Nu zoeken we elk syndroom op in de coset_leaders matrix.
             x = cellfun(@(i){coset_leaders(bi2de(i, 'left-msb') + 1)}, syndromes);
-            bitdec = cell2mat(x{1,1});
+            transmission_errors = cell2mat(x{1,1});
+            
+            % Nu kunnen we de bedoelde codewoorden bepalen.
+            codewords = mod(matrixenc - transmission_errors, 2);
+            
+            % Dan rest ons slechts het omzetten van die codewoorden in hun
+            % informatiewoorden:
+            y = cellfun(@(i){infobits(ismember(codewoorden, i', 'rows'),:)}, num2cell(codewords', 1));
+            bitdec = cell2mat(y);
             
             % output: de gedecodderde bits: lengte 11*N_codewords
-            bitdec = mod(matrixenc - bitdec, 2);
         end
 
         % Functies voor de productcode

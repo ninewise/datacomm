@@ -16,10 +16,9 @@ classdef vraag2_2
             
             % Syndroomtabel bepalen
             decodeertabel = vraag2_2.genereerDecodeerTabel(codewoorden,woorden, n, k);
-            syndroomtabel=vraag2_2.genereerSyndroomTabel(decodeertabel, syst_checkmatrix);
+            syndroomtabel=vraag2_2.genereerSyndroomTabel(decodeertabel, syst_checkmatrix)
             
-            dlmwrite('vraag2_2/syndroomtabel.csv', syndroomtabel);            
-            
+            dlmwrite('vraag2_2/syndroomtabel.csv', syndroomtabel);             
         end
         
         function decodeertabel = genereerDecodeerTabel(codewoorden, woorden, n, k)
@@ -78,6 +77,12 @@ classdef vraag2_2
                syndroomtabel{i,1} = de2bi(syndroomtabel{i,1},size(checkT,2),'left-msb');
             end
             
+        end
+        
+        % Een 'iets' snellere versie voor syndroomtabel te maken (by Ruben)
+        function [cosetleiders syndromen] = genereerSyndroomTabelImproved(syst_checkmatrix)
+            cosetleiders=[zeros(1,n); eye(n)];
+            syndromen=firstcosets*syst_checkmatrix';
         end
     end
 end

@@ -16,9 +16,13 @@ classdef vraag2_1
             
             generatormatrix=vraag2_1.genereerGeneratorMatrix(n, k, generator);
             syst_generatormatrix=vraag2_1.genereerSystGeneratorMatrix(n, k, codewoorden);
+            % alternatieve manier: (komt hetzelfde uit)
+            % syst_generatormatrix2=mod(rref(generatormatrix), 2)
             
             checkmatrix=vraag2_1.genereerGeneratorMatrix(n, k, check_generator);
             syst_checkmatrix=vraag2_1.genereerSystCheckMatrix(n, k, syst_generatormatrix);
+            % alternatieve manier: (komt hetzelfde uit)
+            % syst_checkmatrix2=[transpose(syst_generatormatrix(:, (k+1):n)) eye(4)];
             
             dlmwrite('vraag2_1/generatormatrix.csv', generatormatrix);
             dlmwrite('vraag2_1/syst_generatormatrix.csv', syst_generatormatrix);
