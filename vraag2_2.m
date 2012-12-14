@@ -14,13 +14,26 @@ classdef vraag2_2
             syst_generatormatrix=vraag2_1.genereerSystGeneratorMatrix(n, k, codewoorden);
             syst_checkmatrix=vraag2_1.genereerSystCheckMatrix(n, k, syst_generatormatrix);
             
-            % Syndroomtabel bepalen
-            decodeertabel = vraag2_2.genereerDecodeerTabel(codewoorden,woorden, n, k);
-            syndroomtabel=vraag2_2.genereerSyndroomTabel(decodeertabel, syst_checkmatrix)
+            [syndromen cosetleiders] = vraag2_2.genereerSyndroomTabelImproved(n, syst_checkmatrix);
             
-            dlmwrite('vraag2_2/syndroomtabel.csv', syndroomtabel);             
+            
+            % Syndroomtabel bepalen adhv decodeertabel
+            % decodeertabel = vraag2_2.genereerDecodeerTabel(codewoorden,woorden, n, k);
+            % syndroomtabel=vraag2_2.genereerSyndroomTabel(decodeertabel, syst_checkmatrix);
+            % dlmwrite('vraag2_2/syndroomtabel(from decodeer).csv', syndroomtabel);
+            
+            dlmwrite('vraag2_2/syndroomtabel.csv', [syndromen cosetleiders]);             
         end
         
+        % Een 'iets' snellere versie voor syndroomtabel te maken (by Ruben)
+        function [syndromen cosetleiders] = genereerSyndroomTabelImproved(n, syst_checkmatrix)
+            cosetleiders=[zeros(1,n); eye(n)];
+            syndromen=cosetleiders*syst_checkmatrix';
+        end
+        
+        
+        
+        % Decodeertabel opstellen (niet nodig)
         function decodeertabel = genereerDecodeerTabel(codewoorden, woorden, n, k)
             
             decodeertabel = cell(bitshift(1,(n-k)),size(codewoorden, 1));
@@ -57,6 +70,7 @@ classdef vraag2_2
             nextword = woorden(minindex,:);
         end
         
+        % syndroomtabel opstellen adhv decodeertabel (niet nodig)
         function syndroomtabel = genereerSyndroomTabel(decodeertabel, checkmatrix)
             
             syndroomtabel = cell(size(decodeertabel,1),2);
@@ -79,10 +93,5 @@ classdef vraag2_2
             
         end
         
-        % Een 'iets' snellere versie voor syndroomtabel te maken (by Ruben)
-        function [cosetleiders syndromen] = genereerSyndroomTabelImproved(n, syst_checkmatrix)
-            cosetleiders=[zeros(1,n); eye(n)];
-            syndromen=cosetleiders*syst_checkmatrix';
-        end
     end
 end
