@@ -150,9 +150,12 @@ classdef Channel_Coding
             
             % Tel telkens de elementen in dezelfde "kolom" op
             % om zo de pariteitsbits te bekomen voor elk geencodeerd
-            % codewoord
+            % codewoord. \Ruben: volgens mij kan dit veel sneller met wat
+            % matrices magic, en ik zou die initialisatie op zeros zeker
+            % gebruiken, anders zal hij telkens bij het loopen de grootte
+            % van de matrix moeten veranderen, wat dus redelijk duur is...
             % par_bits = zeros(N_codewords*8, 15);
-            size(ham_codes)
+            %size(ham_codes)
             for i = 1:N_codewords
                 for j = 1:15
                     par_bits(i,j) = sum( ham_codes(i, j:15:(8*15)) );
@@ -165,7 +168,7 @@ classdef Channel_Coding
             % bitenc = zeros(1, (8+1)*15*N_codewords);
             
             % zet alles terug op 1 rij
-            bitenc = reshape(bitenc', 1, [])
+            bitenc = reshape(bitenc', 1, []);
             
         end
         
@@ -174,23 +177,130 @@ classdef Channel_Coding
             % input:
             % bitenc: vector met gecodeerde bits: lengte moet deelbaar zijn door 15
             
+            % bepaal de checkmatrix en syndroomtabel
+            n=15;
+            k=11;
+            l=8;
+            generator=[1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];% x^4 + x + 1
+            [infobits rows]=vraag2_1.genereerInformatieBits(k);
+            [codewoorden rows] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
+            syst_generatormatrix = vraag2_1.genereerSystGeneratorMatrix(n, k, codewoorden);
+            syst_checkmatrix=vraag2_1.genereerSystCheckMatrix(n, k, syst_generatormatrix);
+            [cosetleiders syndroomtabel]=vraag2_2.genereerSyndroomTabelImproved(n, syst_checkmatrix);
+            
+            % essentiële berekeningen en checks
             bitenc = bitenc(:)';    % zorg ervoor dat de input een rijvector is
             N = length(bitenc);
             N_codewords = N/15/(8+1);
-            
-            if(mod(N, 15*(8+1)) ~= 0)
+            blok_lengte=15*(8+1);
+            dec_blok_lengte=15*8;
+            def_dec_blok_lengte=11*8;
+            if(mod(N, blok_lengte) ~= 0)
                 error('input is geen geheel aantal codewoorden.');
             end
             
+            % initialiseer de (gedeeltelijk) gedecodeerde bits
+            bit_pdec=zeros(1, N_codewords*dec_blok_lengte);
             
-            % errorcorrectie hier
+            % initialiseer de gedecodeerde bits
+            bitdec = zeros(1, def_dec_blok_lengte*N_codewords);
             
+            % --- errorcorrectie hier ----
             
-            % output: de gedecodderde bits: lengte 11*8*N_codewords
-            % bitdec = zeros(1, 11*8*N_codewords);
+            % overloop alle blokken
+            for blok = 1:N_codewords
+                % stel dit blok op
+                this_bitenc=bitenc(1, (blok-1)*blok_lengte+1:blok*blok_lengte);
+                
+                % maak een lege cellarray voor de verkeerde syndromen (voor
+                % in de errorcorrectie)
+                verkeerde_syndromen={};
+                
+                % splits het ontvangen codewoord om naar (l+1) rijen van n bits
+                codewords=reshape(this_bitenc, n, (l+1))';
+                
+                % Stel handmatig een fout in (TMP!)
+                codewords(1, 8)=mod(codewords(1, 8)+1,2);
+                %codewords(1, 9)=mod(codewords(1, 9)+1,2);
+                codewords(2, 8)=mod(codewords(2, 8)+1,2);
+
+                % bereken pariteiten
+                berekende_pariteiten=mod(sum(codewords), 2);
+
+                % verwijder pariteiten van het codewoorden (deze waren
+                % enkel nuttig om onze eigen pariteiten te berekenen)
+                codewords=codewords(1:l, :);
+                
+                % bereken syndromen voor alle rijen
+                syndromen=mod(codewords * syst_checkmatrix', 2);
+                
+                % zoek alle fouten
+                fouten=find(any(syndromen, 2));
+
+                % overloop alle rijen met fouten
+                for j = 1:size(fouten)
+                    % bepaal de plaats van het bepaalde syndroom in de
+                    % vooraf opgestelde syndroomtabel
+                    [~,index_gevonden_syndroom]=ismember(syndromen(fouten(j),:),syndroomtabel,'rows');
+                    % bepaal de foutpositie adhv de cosetleiders
+                    foutpositie=find(cosetleiders(index_gevonden_syndroom, :));
+
+                    % kijk als de pariteitsbit op de foutpositie gelijk is aan 1
+                    if berekende_pariteiten(foutpositie) == 1 % aantal fouten == 1, anders meerdere fouten
+                        % we kunnen perfect de fout herstellen :D
+                        codewords(fouten(j), foutpositie)=mod(codewords(fouten(j), foutpositie)+1,2);
+                        berekende_pariteiten(foutpositie)=0;
+                        %'een fout hersteld'
+                    else
+                        verkeerde_syndromen{end+1}={syndromen(fouten(j),:),fouten(j)};
+                    end
+                end
+                
+                % als verkeerde_syndromen > 2 of == 0, doe niets, anders wel
+                if size(verkeerde_syndromen, 2) == 1 % er komen 2 fouten voor in deze rij
+                    % zoek de (berekende) pariteitsbits verschillend van 0
+                    fouten=find(berekende_pariteiten);
+                    % flip de overeenkomstige bits in de beschouwe rij en 
+                    % fix de pariteiten
+                    beschouwde_rij=verkeerde_syndromen{1}{2};
+                    for j = 1:size(fouten)
+                        codewords(beschouwde_rij, fouten(j))=mod(codewords(beschouwde_rij, fouten(j))+1,2);
+                        berekende_pariteiten(fouten(j))=0;
+                    end
+                    %'één fout hersteld'
+                elseif size(verkeerde_syndromen, 2) == 2 & verkeerde_syndromen{1}{1}==verkeerde_syndromen{2}{1}% && GELIJKE SYNDROMEN! er treden 2 fouten op in één kolom 
+                    % bepaal de plaats van het bepaalde syndroom in de
+                    % vooraf opgestelde syndroomtabel, we moeten maar één
+                    % van de twee syndromen bekijken omdat deze toch gelijk
+                    % zijn.
+                    [~,index_gevonden_syndroom]=ismember(verkeerde_syndromen{1}{1},syndroomtabel,'rows');
+                    % bepaal de foutpositie adhv de cosetleiders
+                    foutpositie=find(cosetleiders(index_gevonden_syndroom, :));
+                    % herstel de twee rijen
+                    rij1=verkeerde_syndromen{1}{2};
+                    rij2=verkeerde_syndromen{2}{2};
+                    codewords(rij1, foutpositie)=mod(codewords(rij1, foutpositie)+1,2);
+                    codewords(rij2, foutpositie)=mod(codewords(rij2, foutpositie)+1,2);
+                    %'twee fouten hersteld'
+                end
+                
+                % vorm het codewoord weer om naar 1 rij van n*l bits (niet
+                % meer l+1, want de pariteitsbits zijn nu weg!)
+                codewords=reshape(codewords, 1, n*l)';
+                
+                % sla dit blok op de juiste plaats in bitenc
+                bit_pdec(1, (blok-1)*dec_blok_lengte+1:blok*dec_blok_lengte)=codewords;
+                
+                % decodeer met hamming
+                for i=1:l
+                    dec_start=(blok-1)*def_dec_blok_lengte+(i-1)*k+1;
+                    dec_endd=(blok-1)*def_dec_blok_lengte+i*k;
+                    p_start=(blok-1)*dec_blok_lengte+(i-1)*n+1;
+                    p_endd=(blok-1)*dec_blok_lengte+i*n;
+                    bitdec(dec_start:dec_endd)=Channel_Coding.Ham_decode(bit_pdec(p_start:p_endd));
+                end
+            end
         end
-        
-        
     end
     
 end
