@@ -18,8 +18,7 @@ classdef vraag2_2
             decodeertabel = vraag2_2.genereerDecodeerTabel(codewoorden,woorden, n, k);
             syndroomtabel=vraag2_2.genereerSyndroomTabel(decodeertabel, syst_checkmatrix)
             
-            %dlmwrite('vraag2_2/syndroomtabel.csv', syndroomtabel);
-            
+            dlmwrite('vraag2_2/syndroomtabel.csv', syndroomtabel);             
         end
         
         function decodeertabel = genereerDecodeerTabel(codewoorden, woorden, n, k)
