@@ -139,19 +139,15 @@
 
         \begin{figure}[h]
             \includegraphics[scale=0.75]{vraag1_4.png}
-            \caption{Het gemiddeld aantal codebits per bronsymbool in
-            functie van de lengte van een macroblok.}
+            \caption{Gemiddeld aantal codebits per bronsymbool}
             \label{fig:codebits}
         \end{figure}
 
         Hierop kunnen we het gemiddelde aantal codebits per bronsymbool
         (gebruikmakend van huffmancodering) voor macrosymbolen met
-        grootte K=1..10 en de bijhorende onder/bovengrens.
+        grootte K=1..10 en de bijhorende onder/bovengrens zien. \\
 
-        % We nemen best 3 bits samen om het bestand optimaal te
-        % comprimeren, we zouden ook eventueel 6 kunnen nemen met als
-        % gevolg dat het coderen aanzienlijk trager verloopt.
-        % We krijgen een compressiefactor van TBA
+        We vinden dat het bestand het best gecomprimeerd is voor \textbf{K=9} met \textbf{0.2982} codebits per bronsymbool. Dit is eveneens de compressiefactor.
 		
     \end{subsection}
 
@@ -219,7 +215,7 @@
         \begin{eqnarray*}
         	& foutdetecterend vermogen = d-1 = 2 \\
         	& foutcorrigerend vermogen = floor((d-1)/2) = 1 \\
-        \end{eqnarray*}
+        \end{eqnarray*}        
         
         De checkveelterm kunnen we bepalen aan de hand van volgende vergelijking:
         \begin{eqnarray*}
@@ -242,6 +238,53 @@
    	\end{subsection}
 
     \begin{subsection}*{Vraag 2} % Jimmy
+    	We bepalen de syndroomtabel met behulp van de coset-leiders. In het totaal zijn er 16 ($2^{n-k}$) syndromen. We kunnen 	
+    	snel de coset-leiders bepalen door een nulrij en daaronder een eendheids-matrix te plaatsen. Er is 1 coset-leider met 
+    	gewicht 0 en 15 coset-leiders  met gewicht 1. We vermenigvuldigen nu deze coset-leiders met de getransponeerde checkmatrix uit de vorige vraag en bekomen zo de syndromen.\\
+    
+    	\begin{table}
+    		\centering	
+    		\begin{tabular}{@{}c|c@{}}
+    		Syndroom & Coset-leider \\
+    		\hline
+    		0000 & 000000000000000 \\
+		1100 & 100000000000000\\
+		0110 & 010000000000000\\
+		0011 & 001000000000000\\
+		1101 & 000100000000000\\
+		1010 & 000010000000000\\
+		0101 & 000001000000000\\
+		1110 & 000000100000000\\
+		0111 & 000000010000000\\
+		1111 & 000000001000000\\
+		1011 & 000000000100000\\
+		1001 & 000000000010000\\
+		1000 & 000000000001000\\
+		0100 & 000000000000100\\
+		0010 & 000000000000010\\
+		0001 & 000000000000001\\
+    		\end{tabular}
+    		\caption{Syndroomtabel voor de cyclische (15,11) Hammingcode}
+    	\end{table}
+    
+    	
+    	De kans op de een decodeerfout na een transmissie over een BSC met bitfoutprobabiliteit $p$ is
+    	\begin{eqnarray*}
+		Pr[\text{decodeerfout}] &=&1-Pr[\text{geen decodeerfout}] \\   
+		&=&1-Pr[\textbf{e} \in \text{syndroomtabel}] \\   
+		&=&1- ((1-p)^{15} + 15p(1-p)^{14})
+	\end{eqnarray*}
+	 
+	Met het binomium van Newton kunnen we dit herleiden tot:
+	\begin{eqnarray*}
+		=&&(\sum_{i=0}^{15}(^{15}_i)p^i(1-p)^{n-i})- (1-p)^{15} - 15p(1-p)^{14} \\ 
+		=&& 105p^{2}(1-p)^{13} + 455p^{3}(1-p)^{12} + 1365p^{4}(1-p)^{11}  + 3003p^{5}(1-p)^{10} 
+		\\ & +&  5005p^{6}(1-p)^{9} + 6435p^{7}(1-p)^{8} + 6435p^{8}(1-p)^{7} + 5005p^{9}(1-p)^{6} 
+		\\ & + & 3003p^{10}(1-p)^{5} + 1365p^{11}(1-p)^{4} + 455p^{12}(1-p)^{3} + 105p^{13}(1-p)^{2} 
+		\\ & +&  15p^{14}(1-p) +p^{15}
+	\end{eqnarray*}
+    
+    	Voor $p << 1$ (zeer kleine waarden) kan dit benaderd worden met $105p^2$
     \end{subsection}
 
     \begin{subsection}*{Vraag 3} % Felix

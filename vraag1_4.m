@@ -8,6 +8,9 @@ classdef vraag1_4
             avg_codebit = zeros(1,10);
             lower_bound = zeros(1,10);
             upper_bound = zeros(1,10);
+            lowest_avg = 1;
+            bestsize = 0;
+            
             for K = 1:1:10
                 
                 % Reken frequenties uit van macroblokken
@@ -34,7 +37,15 @@ classdef vraag1_4
                 lower_bound(K) = entropy/K;
                 avg_codebit(K) = sum/K;
                 upper_bound(K) = (sum + (1/entropy))/K;
+                
+                if (avg_codebit(K) < lowest_avg)
+                    lowest_avg = avg_codebit(K);
+                    bestsize= K;
+                end
             end
+            
+            lowest_avg
+            bestsize
             
             % Plot resultaat
             x = 1:1:10;
