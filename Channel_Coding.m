@@ -179,7 +179,7 @@ classdef Channel_Coding
             [codewoorden rows] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
             syst_generatormatrix = vraag2_1.genereerSystGeneratorMatrix(n, k, codewoorden);
             syst_checkmatrix=vraag2_1.genereerSystCheckMatrix(n, k, syst_generatormatrix);
-            [cosetleiders syndroomtabel]=vraag2_2.genereerSyndroomTabelImproved(n, syst_checkmatrix);
+            [syndroomtabel cosetleiders]=vraag2_2.genereerSyndroomTabelImproved(n, syst_checkmatrix);
             
             % essentiële berekeningen en checks
             bitenc = bitenc(:)';    % zorg ervoor dat de input een rijvector is
