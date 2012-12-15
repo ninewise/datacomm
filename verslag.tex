@@ -126,9 +126,7 @@
         grootte K. De referentielijn is hier een rechte, dit is logisch
         aangezien de entropie maximaal is wanneer alle symbolen met
         gelijke kans voorkomen.
-        Vanaf K=8 komen er symbolen voor die met frequentie 0
-        voorkomen, dus hier is de log2 -oneindig, dus de entropie wordt
-        hier ook oneindig groot.
+        Over het algemeen stijgt de entropie bij een grotere K, behalve bij K=6 en K=9.
 
     \end{subsection}
 
@@ -200,8 +198,25 @@
     \end{subsection}
 
     \begin{subsection}*{Vraag 7}
-
-        %(zie vraag 1_7.txt)
+		Na het toepassen van het algoritme om een alfabet om te zetten naar een
+		canonische huffmancode bekomen we het resultaat in
+		tabel~\ref{tab:canonical_codes}.
+        \begin{table}
+    		\centering	
+    		\begin{tabular}{c|c}
+    		\textbf{Letter} &
+            \textbf{Codewoord} \\
+    		D & 0 \\
+			B & 100 \\
+			C & 101 \\
+			G & 110 \\
+			E & 1110 \\
+			A & 11110 \\
+			F & 11111 \\
+    		\end{tabular}
+    		\caption{De codewoorden bij vraag 7 in canonische vorm}
+    		\label{tab:canonical_codes}
+    	\end{table}
 
    	\end{subsection}
 
@@ -209,7 +224,8 @@
 
 \begin{section}*{Kanaalcodering}
 	\begin{subsection}*{Vraag 1}
-
+		Onze generatorveelterm is $g(x) = x^4 + x + 1$.
+		
         Als minimale Hammingafstand voor de gegeven code bekomen we $d=3$. 
         Hiermee kunnen we het foutdetecterend en corrigerend vermogen berekenen als volgt.
         \begin{eqnarray*}

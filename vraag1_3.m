@@ -16,7 +16,7 @@ classdef vraag1_3
                     eref(k)=vraag1_3.calcEntropy(repmat(1/am,am));
                 end
                 plot(x,e,x,eref);
-                title(['Entropie voor K=1..',10]);
+                title(['Entropie voor K=1..10',10]);
                 xlabel('K');
                 ylabel('Entropie');
                 legend(file,'Referentie');
