@@ -97,7 +97,7 @@ classdef Channel_Coding
             syndromes = mod(matrixenc * transpose(syst_checkmatrix), 2);
 
             % We vragen de syndroomtabel van Jimmy.
-            [cleaders s] = vraag2_2.genereerSyndroomTabelImproved(n, syst_checkmatrix);
+            [s cleaders] = vraag2_2.genereerSyndroomTabelImproved(n, syst_checkmatrix);
 
             % Nu zoeken we elk syndroom op in de coset_leaders matrix.
             x = cellfun(@(i){cleaders(ismember(s, i', 'rows'),:)}, num2cell(syndromes', 1));
