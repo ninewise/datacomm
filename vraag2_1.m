@@ -33,10 +33,7 @@ classdef vraag2_1
         function [info rows] = genereerInformatieBits(k)
             rows=bitshift(1, k);
             info=zeros(rows,k);
-            bin = dec2bin(0:rows-1,k);
-            for i = 1:k
-               info(:,i) = str2num(bin(:,i)); 
-            end
+            info = de2bi(0:rows-1,k,'left-msb');
         end
         
         function [codes rows] = genereerCodeWoorden(n, k, infobits, generator)

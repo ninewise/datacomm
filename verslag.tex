@@ -245,10 +245,10 @@
         
         Als de matrices bekomen we:
         \begin{eqnarray*}
-        G &=&\input{vraag2_1/generatormatrix.tex}\\
-        H &=&\input{vraag2_1/checkmatrix.tex}\\
-        G_{sys} &=&\input{vraag2_1/syst_generatormatrix.tex}\\
-        H_{sys} &=&\input{vraag2_1/syst_checkmatrix.tex}\\
+        %G &=&\input{vraag2_1/generatormatrix.tex}\\
+        %H &=&\input{vraag2_1/checkmatrix.tex}\\
+        %G_{sys} &=&\input{vraag2_1/syst_generatormatrix.tex}\\
+        %H_{sys} &=&\input{vraag2_1/syst_checkmatrix.tex}\\
         \end{eqnarray*}
 
    	\end{subsection}
@@ -321,6 +321,21 @@
     \end{subsection}
 
     \begin{subsection}*{Vraag 6} % Jimmy
+   	We vergelijken nu de kans dat er minimum 1 codewoord in een blok van 8 codewoorden fout gedecodeerd wordt (er worden immers 8 Hammingcodewoorden per codewoord van de productcode verstuurd) met de gemeten kans op een decodeerfout bij de productcode.
+	We kunnen deze kans analytisch als volgt berekenen:
+    	\begin{eqnarray*}
+		Pr[\text{decodeerfout}]&=& 1 - Pr[\text{geen decodeerfout}]^8 \\ 
+						&=& 1 - ((1-p)^{15} + 15p(1-p)^{14})^8
+	\end{eqnarray*}
+
+	    	\begin{table}[htpb]
+    		\centering	
+    		\begin{tabular}{r|r|r}
+    		Bitfoutprobabiliteit $p$ & Analytisch resultaat & Gemeten resultaat \\
+    		\hline
+    		\end{tabular}
+    		\caption{Vergelijking analytische met gemeten resultaat voor productcode}
+    	\end{table}
     \end{subsection}
 
     \begin{subsection}*{Vraag 7} % Felix
