@@ -79,25 +79,28 @@ classdef Channel_Coding
             if(mod(N, 15) ~= 0)
                 error('input is geen geheel aantal codewoorden.');
             end
+               
+            persistent ham_decode n k generator infobits;
+            persistent codewoorden syst_generatormatrix s cleaders;
+            if isempty(ham_decode)
+                ham_encode = 'dummy';
+
+                n = 15;
+                k=11;
+                generator=[1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];% x^4 + x + 1
+                [infobits, ~]=vraag2_1.genereerInformatieBits(k);
+                [codewoorden, ~] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
+                syst_generatormatrix = vraag2_1.genereerSystGeneratorMatrix(15, 11, codewoorden);
+                syst_checkmatrix=vraag2_1.genereerSystCheckMatrix(n, k, syst_generatormatrix);
+                [s, cleaders] = vraag2_2.genereerSyndroomTabelImproved(n, syst_checkmatrix);          
+            end
             
-            n=15;
-            k=11;
-            generator=[1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];% x^4 + x + 1
-            [infobits rows]=vraag2_1.genereerInformatieBits(k);
-            woorden = vraag2_1.genereerInformatieBits(n);
-            [codewoorden rows] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
-            syst_generatormatrix = vraag2_1.genereerSystGeneratorMatrix(15, 11, codewoorden);
-            syst_checkmatrix=vraag2_1.genereerSystCheckMatrix(n, k, syst_generatormatrix);
-                        
             % We splitsen de vector bitenc op in codewoorden.
             matrixenc = vec2mat(bitenc, 15);
 
             % Door de matrixenc te vermenigvuldigen met de checkmatrix, bekomen
             % we een matrix van syndromen.
             syndromes = mod(matrixenc * transpose(syst_checkmatrix), 2);
-
-            % We vragen de syndroomtabel van Jimmy.
-            [s cleaders] = vraag2_2.genereerSyndroomTabelImproved(n, syst_checkmatrix);
 
             % Nu zoeken we elk syndroom op in de coset_leaders matrix.
             x = cellfun(@(i){cleaders(ismember(s, i', 'rows'),:)}, num2cell(syndromes', 1));
