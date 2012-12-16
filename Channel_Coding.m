@@ -53,9 +53,12 @@ classdef Channel_Coding
             % Door de (N_codewords x 11) bitmatrix te vermenigvuldigen met de
             % (11 x 15) generatormatrix, bekomen we een gelijkvormige matrix,
             % maar dan nu met codewoorden.
-            n = 15; k = 11; generator = [1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];
-            [infobits rows]=vraag2_1.genereerInformatieBits(k);
-            [codewoorden rows] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
+            persistent n k generator infobits codewoorden;
+            if isempty(n)
+                n = 15; k = 11; generator = [1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];
+                [infobits, ~]=vraag2_1.genereerInformatieBits(k);
+                [codewoorden, ~] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
+            end
             x = cellfun(@(i){codewoorden(ismember(infobits, i', 'rows'),:)}, num2cell(bitmatrix', 1));
             matrixenc = cell2mat(x);
                        
