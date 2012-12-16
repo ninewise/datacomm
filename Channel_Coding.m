@@ -69,33 +69,14 @@ classdef Channel_Coding
             % output: de geencodeerde bits: lengte 15*N_codewords
             % example: bitenc = zeros(1, 15*N_codewords);
         end
-
-        function bitdec = Ham_decode(bitenc)
-            % Functie die een Hammingcode decodeerd (foutcorrectie)
-            % input:
-            % bitenc: vector met gecodeerde bits: lengte moet deelbaar zijn door 15
-            
+        
+        function bitdec = Ham_decode_internal(bitenc, syst_checkmatrix, infobits, codewoorden, cleaders, s)
             bitenc = bitenc(:)';    % zorg ervoor dat de input een rijvector is
             N = length(bitenc);
             N_codewords = N/15;
             
             if(mod(N, 15) ~= 0)
                 error('input is geen geheel aantal codewoorden.');
-            end
-               
-            persistent ham_decode n k generator infobits;
-            persistent codewoorden syst_generatormatrix s cleaders;
-            if isempty(ham_decode)
-                ham_encode = 'dummy';
-
-                n = 15;
-                k=11;
-                generator=[1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];% x^4 + x + 1
-                [infobits, ~]=vraag2_1.genereerInformatieBits(k);
-                [codewoorden, ~] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
-                syst_generatormatrix = vraag2_1.genereerSystGeneratorMatrix(15, 11, codewoorden);
-                syst_checkmatrix=vraag2_1.genereerSystCheckMatrix(n, k, syst_generatormatrix);
-                [s, cleaders] = vraag2_2.genereerSyndroomTabelImproved(n, syst_checkmatrix);          
             end
             
             % We splitsen de vector bitenc op in codewoorden.
@@ -116,10 +97,25 @@ classdef Channel_Coding
             % informatiewoorden:
             y = cellfun(@(i){infobits(ismember(codewoorden, i', 'rows'),:)}, num2cell(codewords', 1));
             bitdec = cell2mat(y);
-            
-            % output: de gedecodderde bits: lengte 11*N_codewords
         end
 
+        function bitdec = Ham_decode(bitenc)
+            % Functie die een Hammingcode decodeerd (foutcorrectie)
+            % input:
+            % bitenc: vector met gecodeerde bits: lengte moet deelbaar zijn door 15
+            n = 15;
+            k=11;
+            generator=[1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];% x^4 + x + 1
+            [infobits, ~]=vraag2_1.genereerInformatieBits(k);
+            [codewoorden, ~] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
+            syst_generatormatrix = vraag2_1.genereerSystGeneratorMatrix(15, 11, codewoorden);
+            syst_checkmatrix=vraag2_1.genereerSystCheckMatrix(n, k, syst_generatormatrix);
+            [s, cleaders] = vraag2_2.genereerSyndroomTabelImproved(n, syst_checkmatrix);          
+
+            bitdec = Channel_Coding.Ham_decode_internal(bitenc, syst_checkmatrix, infobits, codewoorden, cleaders, s);
+            % output: de gedecodderde bits: lengte 11*N_codewords
+        end
+        
         % Functies voor de productcode
         function bitenc = Prod_encode(bitstring)
             % Functie die een bitstring encodeerd met de productcode.
@@ -177,19 +173,16 @@ classdef Channel_Coding
             % bitenc: vector met gecodeerde bits: lengte moet deelbaar zijn door 15
             
             % bepaal de checkmatrix en syndroomtabel
-            persistent n k l generator infobits syst_generatormatrix;
-            persistent syst_checkmatrix syndroomtabel cosetleiders;
-            if isempty(n)
-                n=15;
-                k=11;
-                l=8;
-                generator=[1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];% x^4 + x + 1
-                [infobits, ~]=vraag2_1.genereerInformatieBits(k);
-                [codewoorden, ~] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
-                syst_generatormatrix = vraag2_1.genereerSystGeneratorMatrix(n, k, codewoorden);
-                syst_checkmatrix=vraag2_1.genereerSystCheckMatrix(n, k, syst_generatormatrix);
-                [syndroomtabel, cosetleiders]=vraag2_2.genereerSyndroomTabelImproved(n, syst_checkmatrix);
-            end
+
+            n=15;
+            k=11;
+            l=8;
+            generator=[1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];% x^4 + x + 1
+            [infobits, ~]=vraag2_1.genereerInformatieBits(k);
+            [codewoorden, ~] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
+            syst_generatormatrix = vraag2_1.genereerSystGeneratorMatrix(n, k, codewoorden);
+            syst_checkmatrix=vraag2_1.genereerSystCheckMatrix(n, k, syst_generatormatrix);
+            [syndroomtabel, cosetleiders]=vraag2_2.genereerSyndroomTabelImproved(n, syst_checkmatrix);
             
             % essentiële berekeningen en checks
             bitenc = bitenc(:)';    % zorg ervoor dat de input een rijvector is
@@ -223,9 +216,9 @@ classdef Channel_Coding
                 codewords=reshape(this_bitenc, n, (l+1))';
                 
                 % Stel handmatig een fout in (TMP!)
-                % codewords(1, 8)=mod(codewords(1, 8)+1,2);
-                % codewords(1, 9)=mod(codewords(1, 9)+1,2);
-                % codewords(2, 8)=mod(codewords(2, 8)+1,2);
+                codewords(1, 8)=mod(codewords(1, 8)+1,2);
+                %codewords(1, 9)=mod(codewords(1, 9)+1,2);
+                codewords(2, 8)=mod(codewords(2, 8)+1,2);
 
                 % bereken pariteiten
                 berekende_pariteiten=mod(sum(codewords), 2);
@@ -266,11 +259,9 @@ classdef Channel_Coding
                     % flip de overeenkomstige bits in de beschouwe rij en 
                     % fix de pariteiten
                     beschouwde_rij=verkeerde_syndromen{1}{2};
-                    if (numel(fouten) > 0)
-                       for j = 1:size(fouten)
-                          codewords(beschouwde_rij, fouten(j))=mod(codewords(beschouwde_rij, fouten(j))+1,2);
-                          berekende_pariteiten(fouten(j))=0;
-                       end
+                    for j = 1:size(fouten)
+                        codewords(beschouwde_rij, fouten(j))=mod(codewords(beschouwde_rij, fouten(j))+1,2);
+                        berekende_pariteiten(fouten(j))=0;
                     end
                     %'één fout hersteld'
                 elseif size(verkeerde_syndromen, 2) == 2 & verkeerde_syndromen{1}{1}==verkeerde_syndromen{2}{1}% && GELIJKE SYNDROMEN! er treden 2 fouten op in één kolom 
@@ -302,7 +293,7 @@ classdef Channel_Coding
                     dec_endd=(blok-1)*def_dec_blok_lengte+i*k;
                     p_start=(blok-1)*dec_blok_lengte+(i-1)*n+1;
                     p_endd=(blok-1)*dec_blok_lengte+i*n;
-                    bitdec(dec_start:dec_endd)=Channel_Coding.Ham_decode(bit_pdec(p_start:p_endd));
+                    bitdec(dec_start:dec_endd)=Channel_Coding.Ham_decode_internal(bit_pdec(p_start:p_endd), syst_checkmatrix, infobits, codewoorden, cosetleiders, syndroomtabel);
                 end
             end
         end
