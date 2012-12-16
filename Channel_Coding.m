@@ -177,15 +177,19 @@ classdef Channel_Coding
             % bitenc: vector met gecodeerde bits: lengte moet deelbaar zijn door 15
             
             % bepaal de checkmatrix en syndroomtabel
-            n=15;
-            k=11;
-            l=8;
-            generator=[1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];% x^4 + x + 1
-            [infobits rows]=vraag2_1.genereerInformatieBits(k);
-            [codewoorden rows] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
-            syst_generatormatrix = vraag2_1.genereerSystGeneratorMatrix(n, k, codewoorden);
-            syst_checkmatrix=vraag2_1.genereerSystCheckMatrix(n, k, syst_generatormatrix);
-            [syndroomtabel cosetleiders]=vraag2_2.genereerSyndroomTabelImproved(n, syst_checkmatrix);
+            persistent n k l generator infobits syst_generatormatrix;
+            persistent syst_checkmatrix syndroomtabel cosetleiders;
+            if isempty(n)
+                n=15;
+                k=11;
+                l=8;
+                generator=[1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];% x^4 + x + 1
+                [infobits, ~]=vraag2_1.genereerInformatieBits(k);
+                [codewoorden, ~] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
+                syst_generatormatrix = vraag2_1.genereerSystGeneratorMatrix(n, k, codewoorden);
+                syst_checkmatrix=vraag2_1.genereerSystCheckMatrix(n, k, syst_generatormatrix);
+                [syndroomtabel, cosetleiders]=vraag2_2.genereerSyndroomTabelImproved(n, syst_checkmatrix);
+            end
             
             % essentiële berekeningen en checks
             bitenc = bitenc(:)';    % zorg ervoor dat de input een rijvector is
