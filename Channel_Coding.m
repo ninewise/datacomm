@@ -219,9 +219,9 @@ classdef Channel_Coding
                 codewords=reshape(this_bitenc, n, (l+1))';
                 
                 % Stel handmatig een fout in (TMP!)
-                codewords(1, 8)=mod(codewords(1, 8)+1,2);
-                %codewords(1, 9)=mod(codewords(1, 9)+1,2);
-                codewords(2, 8)=mod(codewords(2, 8)+1,2);
+                % codewords(1, 8)=mod(codewords(1, 8)+1,2);
+                % codewords(1, 9)=mod(codewords(1, 9)+1,2);
+                % codewords(2, 8)=mod(codewords(2, 8)+1,2);
 
                 % bereken pariteiten
                 berekende_pariteiten=mod(sum(codewords), 2);
@@ -262,9 +262,11 @@ classdef Channel_Coding
                     % flip de overeenkomstige bits in de beschouwe rij en 
                     % fix de pariteiten
                     beschouwde_rij=verkeerde_syndromen{1}{2};
-                    for j = 1:size(fouten)
-                        codewords(beschouwde_rij, fouten(j))=mod(codewords(beschouwde_rij, fouten(j))+1,2);
-                        berekende_pariteiten(fouten(j))=0;
+                    if (numel(fouten) > 0)
+                       for j = 1:size(fouten)
+                          codewords(beschouwde_rij, fouten(j))=mod(codewords(beschouwde_rij, fouten(j))+1,2);
+                          berekende_pariteiten(fouten(j))=0;
+                       end
                     end
                     %'één fout hersteld'
                 elseif size(verkeerde_syndromen, 2) == 2 & verkeerde_syndromen{1}{1}==verkeerde_syndromen{2}{1}% && GELIJKE SYNDROMEN! er treden 2 fouten op in één kolom 
