@@ -4,13 +4,14 @@ classdef vraag2_7
     methods(Static)
         
         function [] = main
-           darth_vader = imread('darthvader.bmp');
+           darth_vader = imread('darthvader.bmp', 'bmp');
            p = 0.01;
            [height, width] = size(darth_vader);
            
            % Gewoon zonder codering.
            uncoded = FakeChannel.send(p, darth_vader);
            uncoded = reshape(uncoded, height, width);
+           sum(uncoded == darth_vader);
            imwrite(uncoded, 'uncoded.bmp', 'bmp');
            
            % Met Hamming codering.

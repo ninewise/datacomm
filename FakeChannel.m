@@ -22,7 +22,7 @@ classdef FakeChannel
             % p is de kans op een bitflip.
 
             % we flippen elk element uit in met een kans p:
-            out = cellfun(@(b){b + random('Binomial', 1, p)}, num2cell(in));
+            out = cellfun(@(b){xor(b, random('Binomial', 1, p) == 1)}, num2cell(in));
             out = mod(cell2mat(out), 2);
         end
 
