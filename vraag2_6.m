@@ -11,12 +11,14 @@ classdef vraag2_6
             
             % We verzenden hem door ons valse kanaal.
             bitenc_ = FakeChannel.send(p, bitenc);
-            
+            encl = size(bitenc,2);
+            encmisses = encl - sum(bitenc == bitenc_(1:encl))
             % We decoderen de ontvangen bits.
             bitstring_ = Channel_Coding.Prod_decode(bitenc_);
             
             % Het aantal fouten:
             misses = l - sum(bitstring == bitstring_(1:l));
+            misses
         end
         
         function misses = main
