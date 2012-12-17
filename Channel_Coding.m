@@ -163,7 +163,7 @@ classdef Channel_Coding
             % bitenc = zeros(1, (8+1)*15*N_codewords);
             
             % zet alles terug op 1 rij
-            bitenc = reshape(bitenc', 1, []);
+            bitenc = mod(reshape(bitenc', 1, []),2);
             
         end
         
@@ -284,7 +284,7 @@ classdef Channel_Coding
                 
                 % vorm het codewoord weer om naar 1 rij van n*l bits (niet
                 % meer l+1, want de pariteitsbits zijn nu weg!)
-                codewords=reshape(codewords, 1, n*l)';
+                codewords=reshape(codewords', 1, n*l)';
                 
                 % sla dit blok op de juiste plaats in bitenc
                 bit_pdec(1, (blok-1)*dec_blok_lengte+1:blok*dec_blok_lengte)=codewords;
@@ -295,6 +295,7 @@ classdef Channel_Coding
                     dec_endd=(blok-1)*def_dec_blok_lengte+i*k;
                     p_start=(blok-1)*dec_blok_lengte+(i-1)*n+1;
                     p_endd=(blok-1)*dec_blok_lengte+i*n;
+                    %bit_pdec(p_start:p_endd)
                     bitdec(dec_start:dec_endd)=Channel_Coding.Ham_decode_internal(bit_pdec(p_start:p_endd), syst_checkmatrix, infobits, codewoorden, cosetleiders, syndroomtabel);
                 end
             end
