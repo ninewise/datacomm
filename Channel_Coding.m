@@ -163,7 +163,7 @@ classdef Channel_Coding
             % bitenc = zeros(1, (8+1)*15*N_codewords);
             
             % zet alles terug op 1 rij
-            bitenc = reshape(bitenc', 1, []);
+            bitenc = mod(reshape(bitenc', 1, []), 2);
             
         end
         
