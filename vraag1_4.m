@@ -3,7 +3,7 @@
 classdef vraag1_4
     methods(Static)
         
-        function [] = main()
+        function [lowest_avg bestsize] = main
             load('Xfile3.mat');
             avg_codebit = zeros(1,10);
             lower_bound = zeros(1,10);
@@ -15,12 +15,8 @@ classdef vraag1_4
                 
                 % Reken frequenties uit van macroblokken
                 freqs = FrequencyCounter.calculate_frequencies(bitsrc, 1, K);
-                
                 % Stel alfabet op
-                for i = 0:1:bitshift(1,K)-1
-                    alf(i+1) = i;
-                end
-                alphabet =  cellstr(dec2bin(alf));
+                alphabet = vraag2_1.genereerInformatieBits(K);
                 
                 % Stel Huffman-code op
                 codewords = Source_Coding.create_codebook(alphabet,freqs);
@@ -44,16 +40,16 @@ classdef vraag1_4
                 end
             end
             
-            lowest_avg
-            bestsize
+            % Schrijf resultaat
+            dlmwrite('vraag1_4/avgcodebit.csv', [[1:10]' lower_bound' avg_codebit' upper_bound']);
             
             % Plot resultaat
-            x = 1:1:10;
-            plot(x,lower_bound, x,avg_codebit, x,upper_bound);
-            title(['Gemiddeld aantal codebits voor macroblok lengte 1..10']);
-            xlabel('Lengte macroblok');
-            ylabel('Gemiddeld aantal codebits per bronsymbool');
-            legend('Ondergrens','Gemiddeld aantal codebits/symbool','Bovengrens');
+            % x = 1:1:10;
+            % plot(x,lower_bound, x,avg_codebit, x,upper_bound);
+            % title('Gemiddeld aantal codebits voor macroblok lengte 1..10');
+            % xlabel('Lengte macroblok');
+            % ylabel('Gemiddeld aantal codebits per bronsymbool');
+            % legend('Ondergrens','Gemiddeld aantal codebits/symbool','Bovengrens');
         end
     end
 end

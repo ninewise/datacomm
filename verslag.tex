@@ -5,6 +5,10 @@
 % Floating figuren.
 \usepackage{graphicx}
 
+% Mooie captions en subfiguren.
+\usepackage{caption}
+\usepackage{subcaption}
+
 % Commented, want we gebruiken dit eigenlijk niet?
 %\usepackage{titling}
 
@@ -136,7 +140,8 @@
         \texttt{vraag1\_4.main()}:
 
         \begin{figure}[h]
-            \includegraphics[scale=0.75]{vraag1_4.png}
+        	  \centering
+            \includegraphics[width=\textwidth]{vraag1_4/vraag1_4.png}
             \caption{Gemiddeld aantal codebits per bronsymbool}
             \label{fig:codebits}
         \end{figure}
@@ -245,10 +250,10 @@
         
         Als de matrices bekomen we:
         \begin{eqnarray*}
-        %G &=&\input{vraag2_1/generatormatrix.tex}\\
-        %H &=&\input{vraag2_1/checkmatrix.tex}\\
-        %G_{sys} &=&\input{vraag2_1/syst_generatormatrix.tex}\\
-        %H_{sys} &=&\input{vraag2_1/syst_checkmatrix.tex}\\
+        G &=&\input{vraag2_1/generatormatrix.tex}\\
+        H &=&\input{vraag2_1/checkmatrix.tex}\\
+        G_{sys} &=&\input{vraag2_1/syst_generatormatrix.tex}\\
+        H_{sys} &=&\input{vraag2_1/syst_checkmatrix.tex}\\
         \end{eqnarray*}
 
    	\end{subsection}
@@ -285,11 +290,11 @@
     
     	
     	De kans op de een decodeerfout na een transmissie over een BSC met bitfoutprobabiliteit $p$ is
-    	\begin{eqnarray*}
-		Pr[\text{decodeerfout}] &=&1-Pr[\text{geen decodeerfout}] \\   
-		&=&1-Pr[\textbf{e} \in \text{syndroomtabel}] \\   
-		&=&1- ((1-p)^{15} + 15p(1-p)^{14})
-	\end{eqnarray*}
+    	\begin{eqnarray}
+		Pr[\text{decodeerfout}] &=&1-Pr[\text{geen decodeerfout}] \nonumber \\   
+		&=&1-Pr[\textbf{e} \in \text{syndroomtabel}] \nonumber \\   
+        &=&1- ((1-p)^{15} + 15p(1-p)^{14}) \label{eqn:2_2}
+        \end{eqnarray}
 	 
 	Met het binomium van Newton kunnen we dit herleiden tot:
 	\begin{eqnarray*}
@@ -304,6 +309,43 @@
     \end{subsection}
 
     \begin{subsection}*{Vraag 3} % Felix
+        In \texttt{vraag2\_3.m} vindt u de code terug waarmee de simulaties
+        uitgevoerd worden. Deze maakt gebruik van een ``vals'' kanaal dat
+        bitfouten van kans $p$ introduceert. In tabel \ref{tab:2_3} vindt u
+        de door simulatie gevonden decodeerfouten in vergelijking met de
+        theoretisch verwachte kans op fouten. De theoretische probabliliteiten
+        werden berekend met formule \ref{eqn:2_2}.
+
+        Een grafische voorstelling van deze decodeerfouten vindt u in figuur
+        \ref{fig:2_3}.
+
+        \begin{table}
+            \centering
+            \begin{tabular}{rrr}
+                \textbf{Foutprobabiliteit} &
+                \textbf{Theoretisch} &
+                \textbf{Re\"eel} \\
+                $3 * 10^{-1}$ & 96.47 \% & 96.48 \% \\
+                $1 * 10^{-1}$ & 45.09 \% & 45.60 \% \\
+                $3 * 10^{-2}$ &  7.30 \% &  9.34 \% \\
+                $1 * 10^{-2}$ &  0.96 \% &  0.55 \% \\
+                $3 * 10^{-3}$ &  0.09 \% &  0.00 \% \\
+                $1 * 10^{-3}$ &  0.01 \% &  0.00 \%
+            \end{tabular}
+            \caption{De theoretische en re\"ele kans op een fout gedecodeerd
+                codewoord. De re\"ele kans werd bepaald door 10000 bits te
+            verzenden, na het encoderen met Hamming codering.}
+            \label{tab:2_3}
+        \end{table}
+
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{vraag2_3.png}
+            \caption{De theoretische en re\"ele decodeerfouten in functie
+            van de foutprobabiliteit van het gebruikte kanaal.}
+            \label{fig:2_3}
+        \end{figure}
+
     \end{subsection}
 
     \begin{subsection}*{Vraag 4} % Enver
@@ -327,18 +369,84 @@
 		Pr[\text{decodeerfout}]&=& 1 - Pr[\text{geen decodeerfout}]^8 \\ 
 						&=& 1 - ((1-p)^{15} + 15p(1-p)^{14})^8
 	\end{eqnarray*}
-
+	We simuleren nu voor een random bitsequentie van 10000 woorden lang (1 woord = 11 bits) en vinden voor het aantal foute woorden:
 	    	\begin{table}[htpb]
     		\centering	
     		\begin{tabular}{r|r|r}
-    		Bitfoutprobabiliteit $p$ & Analytisch resultaat & Gemeten resultaat \\
+    		Bitfoutprobabiliteit $p$ & Analytisch aantal fout & Gemeten aantal fout\\
     		\hline
+    		0.3 & 10000 & 10000 \\
+        		0.1 & 9917 & 9896\\
+    		0.03 & 4546 & 3056\\
+    		0.01 & 745& 248\\
+    		0.003 & 73 & 8 \\
+    		0.001 & 8 & 0\\		
     		\end{tabular}
     		\caption{Vergelijking analytische met gemeten resultaat voor productcode}
     	\end{table}
     \end{subsection}
 
     \begin{subsection}*{Vraag 7} % Felix
+
+        De figuren waarin de toekomende bits resulteren vindt u terug in figuur
+        \ref{fig:2_7}.
+        
+        Wat ons eerst en vooral opvalt, is dat de afbeelding die verzonden werd
+        zonder codering zo goed als helemaal verloren gegaan is. Dit is toch
+        lichtelijk verbazend, aangezien er slechts 1 op de 100 bits veranderd
+        is.
+
+        De resultaten van de Hammingcodering en de Productcodering zijn dan
+        echter wel wat we verwacht hadden. Bij de Hammingcodering (figuur
+        \ref{fig:ham_coded}) is de afbeelding bijna geheel zichtbaar, op een
+        redelijk groot aantal verticale streepjes (van 11 bits lang) na. Voor
+        de Productcodering (figuur \ref{fig:prod_coded}) zijn die fouten bijna
+        volledig verdwenen.
+
+        Laat ons nu nog opmerken dat de fout gedecodeerde woorden willekeurig
+        over de figuur verdeelt zijn. Daaruit kunnen we afleiden dat elk
+        woord een evengroote kans maakt om verkeerd ontvangen te worden.
+
+        \begin{figure}
+            \centering
+
+            \begin{subfigure}{0.4\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{darthvader.png}
+                \caption{}
+                \label{fig:darthvader}
+            \end{subfigure}
+            \begin{subfigure}{0.4\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{uncoded.png}
+                \caption{}
+                \label{fig:uncoded}
+            \end{subfigure}
+
+            \begin{subfigure}{0.4\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{ham_coded.png}
+                \caption{}
+                \label{fig:ham_coded}
+            \end{subfigure}
+            \begin{subfigure}{0.4\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{prod_coded.png}
+                \caption{}
+                \label{fig:prod_coded}
+            \end{subfigure}
+
+            \caption{De figuren bij vraag 2.7. Ter referentie ziet u in figuur
+                \ref{fig:darthvader} de originele figuur. De abstracte kunst in
+                \ref{fig:uncoded} komt uit het niet-gecodeerde kanaal. Figuur
+                \ref{fig:ham_coded} en \ref{fig:prod_coded} zijn
+                respectievelijk verzonden over het kanaal na Hamming- en
+            Productcodering.}
+
+            \label{fig:2_7}
+
+        \end{figure}
+
     \end{subsection}
 
 \end{section}
