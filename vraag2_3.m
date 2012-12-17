@@ -15,8 +15,13 @@ classdef vraag2_3
             % We decoderen de ontvangen bits.
             bitstring_ = Channel_Coding.Ham_decode(bitenc_);
             
-            % Het aantal fouten:
-            misses = l - sum(bitstring == bitstring_(1:l));
+            % Nu, het aantal bitfouten zou makkelijk te bepalen zijn, maar
+            % we willen het aantal foute codewoorden weten. Daarvoor moeten
+            % we de twee vectors omzetten naar matrices.
+            bitstring = vec2mat(bitstring, 11);
+            bitstring_ = vec2mat(bitstring_, 11);
+            [height, ~] = size(bitstring);
+            misses = (height - sum(all(bitstring == bitstring_, 2))) / height;
         end
         
         function misses = main
@@ -27,9 +32,6 @@ classdef vraag2_3
             l = 10000;
             
             misses = cell2mat(cellfun(@(k){vraag2_3.run(k, l)}, num2cell(p)));
-            
-            misses = misses / l;
-            
         end
 
     end
