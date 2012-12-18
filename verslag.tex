@@ -59,7 +59,7 @@
         wordt het macroblock \texttt{[1 0;0 1]} omgezet naar
         \texttt{1 0 0 1} en krijgt het nummer $9$.
 
-        Met deze frequenties kunnen we de huffman-boom opstellen. Deze
+        Met deze frequenties kunnen we de Huffman-boom opstellen. Deze
         vindt u in Figuur~\ref{fig:manual_huffman}. Door aan de
         vertakking met het kleinste deelgewicht een nul toe te kennen,
         en een \'e\'en anders, bekomen we de codering in
@@ -117,7 +117,7 @@
 
         De afbeelding kan dus tot amper 40 procent van zijn
         oorspronkelijke grootte gereduceerd worden met behulp van
-        Huffman codering.
+        Huffmancodering.
 
     \end{subsection}
 
@@ -151,7 +151,7 @@
         \end{figure}
 
         Hierop kunnen we het gemiddelde aantal codebits per bronsymbool
-        (gebruikmakend van huffmancodering) voor macrosymbolen met
+        (gebruikmakend van Huffman-codering) voor macrosymbolen met
         grootte K=1..10 en de bijhorende onder/bovengrens zien.
 
         Als ondergrens nemen we de entropie van een bronsymbool.
@@ -162,7 +162,7 @@
         \textbf{K=9} met \textbf{0.2982} codebits per bronsymbool. Dit
         is eveneens de compressiefactor. Het kan misschien  interessant
         zijn om bijvoorbeeld \textbf{K=3} of \textbf{K=6} te gebruiken
-        naargelang comprimeer-snelheid van belang is. Voor deze
+        naargelang uitvoertijd van belang is. Voor deze
         macroblok-groottes duurt het immers minder lang om een codeboek
         op te stellen.
 		
@@ -175,7 +175,7 @@
         grootte \'e\'en is dit niet het geval, maar aangezien we geen
         codewoorden van minder dan \'e\'en bit kunnen toekennen, is dit
         slechts te verwachten. Dit kleine verschil wijst erop dat
-        Huffmancodering een zeer goede broncodering is.
+        Huffman-codering een zeer goede broncodering is.
 
         % TODO: Optimaal? Voorwaarden?
 
@@ -183,9 +183,9 @@
 
     \begin{subsection}*{Vraag 6}
 
-        Vertrekkende van de \emph{niet-canonische} Huffman codes in
-        tabel~\ref{tab:manual_huffman}, vinden we de canonische
-        Huffman codes gegeven in tabel~\ref{tab:canonical_huffman}
+        Vertrekkende van de \emph{niet-canonische} Huffmancode in
+        Tabel~\ref{tab:manual_huffman}, vinden we de canonische
+        Huffmancode gegeven in Tabel~\ref{tab:canonical_huffman}
 
         \begin{table}
             \centering
@@ -210,7 +210,7 @@
                 \texttt{1110} & \texttt{1111110} \\
                 \texttt{1111} & \texttt{10} \\
             \end{tabular}
-            \caption{Canonische Huffmancodes bij vraag 6}
+            \caption{Canonische Huffmancode bij vraag 6}
             \label{tab:canonical_huffman}
         \end{table}
 
@@ -218,8 +218,8 @@
 
     \begin{subsection}*{Vraag 7}
         Na het toepassen van het algoritme om een alfabet om te zetten
-        naar een canonische huffmancode bekomen we het resultaat in
-        tabel~\ref{tab:canonical_codes}.
+        naar een canonische Huffmancode bekomen we het resultaat in
+        Tabel~\ref{tab:canonical_codes}.
 
         \begin{table}
             \centering
@@ -247,12 +247,12 @@
     \begin{subsection}*{Vraag 1}
         Onze generatorveelterm is $g(x) = x^4 + x + 1$.
 
-        Als minimale Hammingafstand voor de gegeven code bekomen we
-        $d=3$. Hiermee kunnen we het foutdetecterend en corrigerend
-        vermogen berekenen als volgt.
+        Als minimale Hamming-afstand voor de gegeven code bekomen we
+        $d=3$. Hiermee kunnen we het fout-detecterend en corrigerend
+        vermogen berekenen als volgt:
         \begin{eqnarray*}
-            & foutdetecterend vermogen = d-1 = 2 \\
-            & foutcorrigerend vermogen = floor((d-1)/2) = 1
+            & \text{fout-detecterend vermogen} = d-1 = 2 \\
+            & \text{fout-corrigerend vermogen} = floor((d-1)/2) = 1
         \end{eqnarray*}
 
         De checkveelterm kunnen we bepalen aan de hand van volgende
@@ -282,7 +282,7 @@
         We bepalen de syndroomtabel met behulp van de coset-leiders.
         In het totaal zijn er 16 ($2^{n-k}$) syndromen. We kunnen snel
         de coset-leiders bepalen door een nulrij en daaronder een
-        eenheids-matrix te plaatsen. Er is 1 coset-leider met gewicht
+        eenheidsmatrix te plaatsen. Er is 1 coset-leider met gewicht
         0 en 15 coset-leiders met gewicht 1. We vermenigvuldigen nu
         deze coset-leiders met de getransponeerde checkmatrix uit de
         vorige vraag en bekomen zo de syndromen.
@@ -345,8 +345,8 @@
         simulaties uitgevoerd worden. Deze maakt gebruik van een
         ``vals'' kanaal dat bitfouten van kans $p$ introduceert. In
         tabel \ref{tab:2_3} vindt u de door simulatie gevonden
-        decodeerfouten in vergelijking met de theoretisch verwachte
-        kans op fouten. De theoretische probabliliteiten werden
+        kans op decodeerfouten in vergelijking met de theoretisch verwachte
+        kans op fouten. De theoretische probabiliteit werd
         berekend met formule \ref{eqn:2_2}.
 
         Een grafische voorstelling van deze decodeerfouten vindt u in
@@ -367,7 +367,7 @@
             \end{tabular}
             \caption{De theoretische en re\"ele kans op een fout
                 gedecodeerd codewoord. De re\"ele kans werd bepaald
-                door 10000 bits te verzenden, na het encoderen met
+                door 10000 bits te verzenden, na het coderen met
             Hamming codering.}
             \label{tab:2_3}
         \end{table}
@@ -389,9 +389,9 @@
     \begin{subsection}*{Vraag 5} % Ruben
 
         Als er een even aantal (groter dan 2) syndromen verschillend
-        zijn van de nulvector, dan zal weten wij dat de pariteitsbit
+        zijn van de nulvector, dan weten wij dat de pariteitsbit
         juist staan, maar wij weten dan niet hoe we de fouten moeten
-        corrigeren. Dit geval staat ook niet in de ge\"iplementeerde
+        corrigeren. Dit geval staat ook niet in de ge\"implementeerde
         code, dus deze soorten fouten zullen niet verbeterd worden.
         Een tweede geval waarbij er fout gecorrigeerd kan worden is
         wanneer er een fout optreed in de laatste rij van een blok, de
@@ -412,7 +412,7 @@
                 &=& 1 - ((1-p)^{15} + 15p(1-p)^{14})^8
         \end{eqnarray*}
 
-        We simuleren nu encoderen en decoderen met productcode voor een
+        We simuleren nu coderen en decoderen met productcode voor een
         willekeurige bit-sequentie van 10000 woorden lang en zoeken de
         fouten in vectoren van 88 bits (8 blokken x 11 bits per woord).
         
@@ -459,12 +459,12 @@
         Bij de twee andere transmissies zijn de foute bits niet zomaar
         verdeeld. We zien duidelijk de fout gedecodeerde codewoorden
         zitten in verticale lijntjes van 11 bits lang. Bij figuur
-        \ref{fig:ham_coded} (Hamming codering) zijn dit er een stuk
+        \ref{fig:ham_coded} (Hammingcode) zijn dit er een stuk
         meer dan bij figuur \ref{fig:prod_coded} (Product codering).
 
         Laat ons nu nog opmerken dat de fout gedecodeerde woorden
-        willekeurig over de figuur verdeelt zijn. Daaruit kunnen we
-        afleiden dat elk woord een evengroote kans maakt om verkeerd
+        willekeurig over de figuur verdeeld zijn. Daaruit kunnen we
+        afleiden dat elk woord een even grote kans maakt om verkeerd
         ontvangen te worden.
 
         \begin{figure}
@@ -499,7 +499,7 @@
             \caption{De figuren bij vraag 2.7. Ter referentie ziet u in
                 figuur (\ref{fig:darthvader}) de originele figuur. De
                 drie daaropvolgende figuren tonen in volgorde de
-                ongecodeerde, Hamming-gecodeerde en Productgecodeerde
+                ongecodeerde, Hamming-gecodeerde en Product-gecodeerde
             transmissies.}
 
             \label{fig:2_7}
@@ -516,10 +516,10 @@
 \begin{section}*{Overzicht Matlab bestanden}
 \begin{itemize}
     \item \texttt{FakeChannel.m} : Bevat code om een kanaal dat fouten
-        introduceert te simuleren. Kan ook random bitvectoren genereren
+        introduceert te simuleren. Kan ook random bit-vectoren genereren
         om de verschillende onderdelen te testen.
     \item \texttt{FrequencyCounter.m} : Bepaalt de frequenties van
-        macrowoorden in een afbeelding.
+        macroblokken in een afbeelding.
     \item \texttt{Vraag1\_3.m} :
     \item \texttt{Vraag1\_4.m} : Stelt Huffmancode op voor macroblokken
         van grootte K=1..10 en berekent het gemiddeld aantal
