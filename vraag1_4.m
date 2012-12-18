@@ -41,7 +41,7 @@ classdef vraag1_4
             end
             
             % Schrijf resultaat
-            dlmwrite('vraag1_4/avgcodebit.csv', [[1:10]' lower_bound' avg_codebit' upper_bound']);
+            dlmwrite('avgcodebit.csv', [[1:10]' lower_bound' avg_codebit' upper_bound']);
             
             % Plot resultaat
             % x = 1:1:10;

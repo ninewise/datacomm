@@ -402,7 +402,6 @@
     \end{subsection}
 
     \begin{subsection}*{Vraag 6} % Jimmy
-
         We vergelijken nu de kans dat er minimum 1 codewoord in een
         blok van 8 codewoorden fout gedecodeerd wordt met de gemeten
         kans op een decodeerfout bij de productcode. We kunnen deze
@@ -417,7 +416,7 @@
         willekeurige bit-sequentie van 10000 woorden lang en zoeken de
         fouten in vectoren van 88 bits (8 blokken x 11 bits per woord).
         
-        De resultaten vinden we in \ref{tab:2_6} en \ref{fig:2_6}.
+        De resultaten van \texttt{vraag2\_6.m} vinden we in tabel \ref{tab:2_6} en figuur \ref{fig:2_6}.
 
         \begin{table}[h]
             \centering	
@@ -440,14 +439,13 @@
         
         \begin{figure}[h]
             \centering
-            \includegraphics[width=0.8\textwidth]{vraag2_6.png}
+            \includegraphics[width=0.7\textwidth]{vraag2_6.png}
             \caption{De theoretische en re\"ele kans op een
             decodeerfout voor de productcode}
             \label{fig:2_6}
         \end{figure}
-        
     \end{subsection}
-
+	
     \begin{subsection}*{Vraag 7} % Felix
 
         De figuren waarin de toekomende bits resulteren vindt u terug
@@ -515,6 +513,20 @@
 \end{section}
 
 \begin{section}*{Volledig systeem} % Enver
+\end{section}
+
+\begin{section}*{Overzicht Matlab bestanden}
+\begin{itemize}
+    \item \texttt{FakeChannel.m} :
+    \item \texttt{FrequencyCounter.m} : 
+    \item \texttt{Vraag1\_3.m} :
+    \item \texttt{Vraag1\_4.m} : Stelt Huffmancode op voor macroblokken van grootte K=1..10 en berekent het gemiddeld aantal codebits/bronsymbool met ondergrens en bovengrens. Geeft beste compressiefactor en de bijhorende K terug.
+    \item \texttt{Vraag2\_1.m} :
+    \item \texttt{Vraag2\_2.m} : Maakt syndroomtabel aan. Heeft zowel de eenvoudige manier, als de manier waarbij we eerst de decodeertabel opstellen.
+    \item \texttt{Vraag2\_3.m} :
+    \item \texttt{Vraag2\_6.m} : Simuleer het versturen van bits over een kanaal met bitfoutprobabiliteit $p$ en met productcode codering.
+    \item \texttt{Vraag2\_7.m} :
+\end{itemize}
 \end{section}
 
 \end{document}
