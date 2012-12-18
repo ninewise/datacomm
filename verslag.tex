@@ -416,7 +416,8 @@
         willekeurige bit-sequentie van 10000 woorden lang en zoeken de
         fouten in vectoren van 88 bits (8 blokken x 11 bits per woord).
         
-        De resultaten van \texttt{vraag2\_6.m} vinden we in tabel \ref{tab:2_6} en figuur \ref{fig:2_6}.
+        De resultaten van \texttt{vraag2\_6.m} vinden we in tabel
+        \ref{tab:2_6} en figuur \ref{fig:2_6}.
 
         \begin{table}[h]
             \centering	
@@ -451,17 +452,15 @@
         De figuren waarin de toekomende bits resulteren vindt u terug
         in figuur \ref{fig:2_7}.
 
-        Wat ons eerst en vooral opvalt, is dat de afbeelding die
-        verzonden werd zonder codering zo goed als helemaal verloren
-        gegaan is. Dit is toch lichtelijk verbazend, aangezien er
-        slechts 1 op de 100 bits veranderd is.
+        Wat de ongecodeerde transmissie betreft, is de verklaring niet
+        ver te zoeken. Bij benadering is gewoon 1 op de 100 bits fout.
+        Daardoor krijgen we een ``bespikkelde'' afbeelding.
 
-        De resultaten van de Hammingcodering en de Productcodering zijn
-        dan echter wel wat we verwacht hadden. Bij de Hammingcodering
-        (figuur \ref{fig:ham_coded}) is de afbeelding bijna geheel
-        zichtbaar, op een redelijk groot aantal verticale streepjes
-        (van 11 bits lang) na. Voor de Productcodering (figuur
-        \ref{fig:prod_coded}) zijn die fouten bijna volledig verdwenen.
+        Bij de twee andere transmissies zijn de foute bits niet zomaar
+        verdeeld. We zien duidelijk de fout gedecodeerde codewoorden
+        zitten in verticale lijntjes van 11 bits lang. Bij figuur
+        \ref{fig:ham_coded} (Hamming codering) zijn dit er een stuk
+        meer dan bij figuur \ref{fig:prod_coded} (Product codering).
 
         Laat ons nu nog opmerken dat de fout gedecodeerde woorden
         willekeurig over de figuur verdeelt zijn. Daaruit kunnen we
@@ -498,11 +497,10 @@
             \end{subfigure}
 
             \caption{De figuren bij vraag 2.7. Ter referentie ziet u in
-                figuur \ref{fig:darthvader} de originele figuur. De
-                abstracte kunst in \ref{fig:uncoded} komt uit het
-                niet-gecodeerde kanaal. Figuur \ref{fig:ham_coded} en
-                \ref{fig:prod_coded} zijn respectievelijk verzonden
-            over het kanaal na Hamming- en Productcodering.}
+                figuur (\ref{fig:darthvader}) de originele figuur. De
+                drie daaropvolgende figuren tonen in volgorde de
+                ongecodeerde, Hamming-gecodeerde en Productgecodeerde
+            transmissies.}
 
             \label{fig:2_7}
 
