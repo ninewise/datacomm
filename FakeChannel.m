@@ -16,8 +16,7 @@ classdef FakeChannel
         function out = send(p, in)
             % in is de data die verzonden wordt. Als het een matrix is,
             % lezen we die rij per rij in.
-            in = in';
-            in = in(:)';
+            in = reshape(in, 1, []);
 
             % p is de kans op een bitflip.
 
