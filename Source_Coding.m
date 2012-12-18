@@ -20,7 +20,7 @@ classdef Source_Coding
             alphabet_indices = cell(1, N);
 
             for i = 1:N
-                alphabet_indices{i} = {i};
+                alphabet_indices{i} = [i];
             end
 
             % Cell array die de voorlopige codes voor elke teken bijhoudt
@@ -38,27 +38,18 @@ classdef Source_Coding
                 alphabet_indices = alphabet_indices(sorted_indices);
 
                 %% 2. Ken codes toe aan de 2 symbolen met de kleinste frequenties
-                for i = 1:length(alphabet_indices{1})
-                    indices = alphabet_indices{1}{i};
-
-                    for j = indices
-                        codes(j) = {[0 codes{j}]};
-                    end
-                end
-
-                for i = 1:length(alphabet_indices{2})
-                    indices = alphabet_indices{2}{i};
-
-                    for j = indices
-                        codes(j) = {[1 codes{j}]};
-                    end
-                end
+                indices = alphabet_indices{1};
+                codes(indices) = cellfun(@(w){[0, codes{w}]}, num2cell(indices));
+                
+                indices = alphabet_indices{2};
+                codes(indices) = cellfun(@(w){[1, codes{w}]}, num2cell(indices));
+                
 
                 %% 3. Groepeer de 2 kleinste symbolen samen en tel hun freqs op
                 rel_freq(2) = rel_freq(1) + rel_freq(2);
                 rel_freq(1) = [];
 
-                alphabet_indices{2} = [alphabet_indices{1} alphabet_indices{2}];
+                alphabet_indices{2} = cat(2, alphabet_indices{1}, alphabet_indices{2});
                 alphabet_indices(1) = [];
             end
             
