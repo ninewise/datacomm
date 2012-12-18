@@ -371,7 +371,7 @@
 		Pr[\text{decodeerfout}]&=& 1 - Pr[\text{geen decodeerfout}]^8 \\ 
 						&=& 1 - ((1-p)^{15} + 15p(1-p)^{14})^8
 	\end{eqnarray*}
-	We simuleren nu encoderen en decoderen met productcode voor een willekeurige bit-sequentie van 10000 woorden lang en zoeken de fouten in vectoren van 88 bits (8 blokken x 11 bits per woord). \\ De resultaten vinden we in \ref{tab:2_6} en \ref{fig:2_6}.
+	We simuleren nu encoderen en decoderen met productcode voor een willekeurige bit-sequentie van 10000 woorden lang en zoeken de fouten in vectoren van 88 bits (8 blokken x 11 bits per woord). \\ De resultaten vinden we in tabel \ref{tab:2_6} en figuur \ref{fig:2_6}.
 	    	\begin{table}[h]
     		\centering	
     		\begin{tabular}{r|r|r}
@@ -382,10 +382,10 @@
     		0.03 & 45.46 & 30.56\\
     		0.01 & 7.45& 2.48\\
     		0.003 & 0.73 & 0.08 \\
-    		0.001 & 0.08 & 0\\		
+    		0.001 & 0.08 & 0\\	
     		\end{tabular}
-  		\label{tab:2_6}
     		\caption{Vergelijking analytische met gemeten resultaat voor kans op een decodeerfout bij productcode.}
+          	\label{tab:2_6}	
     	\end{table}
     
     	\begin{figure}[h]
@@ -394,7 +394,6 @@
             	\caption{De theoretische en re\"ele kans op een decodeerfout voor de productcode}
             	\label{fig:2_6}
         \end{figure}
-        
     \end{subsection}
 
     \begin{subsection}*{Vraag 7} % Felix
