@@ -38,7 +38,7 @@ classdef vraag2_6
             
             % Vind aantal foute woorden en zet om naar %
             aantalfouten = cell2mat(cellfun(@(k){vraag2_6.run(k, l)}, num2cell(p))) / l * 100;       
-            dlmwrite('vraag2_6/prod_simulaties(new).csv', [p' analytisch' aantalfouten']); 
+            dlmwrite('prod_simulaties.csv', [p' analytisch' aantalfouten']); 
         end
 
     end

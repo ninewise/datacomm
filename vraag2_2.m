@@ -5,10 +5,9 @@ classdef vraag2_2
             % Codewoorden & woorden bepalen
             n=15;
             k=11;
-            [infobits rows]=vraag2_1.genereerInformatieBits(k);
-            woorden = vraag2_1.genereerInformatieBits(n);
-            generator=[1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];% x^4 + x + 1
-            [codewoorden rows]=vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
+            infobits = vraag2_1.genereerInformatieBits(k);
+            generator = [1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];% x^4 + x + 1
+            codewoorden = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
             
             % H_sys bepalen
             syst_generatormatrix=vraag2_1.genereerSystGeneratorMatrix(n, k, codewoorden);
@@ -22,7 +21,7 @@ classdef vraag2_2
             % syndroomtabel=vraag2_2.genereerSyndroomTabel(decodeertabel, syst_checkmatrix);
             % dlmwrite('vraag2_2/syndroomtabel(from decodeer).csv', syndroomtabel);
             
-            dlmwrite('vraag2_2/syndroomtabel.csv', [syndromen cosetleiders]);             
+            dlmwrite('syndroomtabel.csv', [syndromen cosetleiders]);             
         end
         
         % Een 'iets' snellere versie voor syndroomtabel te maken (by Ruben)
