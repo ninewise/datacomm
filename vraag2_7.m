@@ -26,6 +26,15 @@ classdef vraag2_7
            prod_coded = Channel_Coding.Prod_decode(prod_coded_rec);
            prod_coded = reshape(prod_coded(1:(height*width)), height, width);
            imwrite(mod(prod_coded + 1, 2), 'prod_coded.bmp', 'bmp');
+
+           % Wat betreft de vreemde inversies net voor het wegschrijven
+           % van de afbeelding: Bekijk het resultaat van onderstaande
+           % code, waarvan je zou verwachten dat ze de afbeelding
+           % kopieert.
+           %
+           %    image = imread('darthvader.bmp', 'bmp');
+           %    imwrite(image, 'darthvader_copy.bmp', 'bmp');
+           %
         end
         
     end
