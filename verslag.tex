@@ -515,6 +515,89 @@
 \end{section}
 
 \begin{section}*{Volledig systeem} % Enver
+
+	De resultaten van het doorsturen van de figuur over kanaal zijn te zien
+	in figuur~\ref{fig:3_3}.
+	
+	\par
+	
+	Wanneer we de afbeelding door het kanaal sturen zonder compressie en zonder
+	kanaalcodering zien we dat bepaalde pixels verkeerd toekomen waardoor
+	de uiteindelijke afbeelding die toekomt aan de ontvangstzijde \emph{stippen}
+	bevat die de verkeerde kleur hebben.
+	De kans op het voorkomen van een stip zou wegens
+	$p = 1 \cdot 10^{-2}$ ongeveer 1 op 100 moeten zijn.
+	
+	\par
+	
+	Als we enkel compressie toepassen op de afbeelding, maar geen kanaalcodering,
+	dan wordt de gehele afbeelding vervormd, zoals te zien is in 
+	figuur~\ref{fig:3_3:compressed}.
+	Wanneer er een bit fout doorgestuurd wordt, dan kan dit drastische gevolgen
+	hebben bij het decoderen van de huffman ge\"encodeerde afbeelding omdat
+	op die manier bijvoorbeeld \'e\'en langer codewoord kan omgezet worden naar 
+	twee kortere codewoorden, of andersom twee kortere codewoorden die op elkaar 
+	volgen kan omgezet worden naar \'e\'en langer codewoord. 
+	Dit heeft dan ook tot gevolg dat de grootte van de afbeelding aan de ontvangstzijde
+	kan verschillen van de grootte van de afbeelding aan de verzendzijde, wat bij
+	ons ook het geval is.
+	
+	\par
+	
+	Als we ten laatste wel kanaalcodering toepassen na compressie 
+	(zie figuur~\ref{fig:3_3:coded_compressed}),
+	dan kan een groot deel van het aantal bitfouten opgelost worden waardoor
+	de hoeveelheid artefacten sterk verminderd worden.
+	Verder lijkt de afbeelding te zijn \emph{verschoven}, wat een gevolg is van
+	het feit dat \'e\'en gewijzigde bit ervoor kan zorgen dat langere codewoorden
+	plotseling een sequentie van kortere codewoorden worden of omgekeerd
+	kortere codewoorden plotseling \'e\'en lang codewoord worden.
+	Aangezien we bij het doorsturen de afbeelding als \'e\'en lange rij van bits
+	doorsturen zal, wanneer het aantal codewoorden in de uiteindelijke ontvangen
+	afbeelding verschilt van de verzonden afbeelding, het aantal gedecodeerde macroblokken
+	verschillen van het origineel aantal macroblokken. Zo zal een rij van macroblokken
+	``doorgeschoven'' worden naar de rij eronder wanneer we meer macroblokken hebben in die rij
+	of zullen alle onderstaande rijen ``doorgeschoven'' worden naar de rij erboven
+	wanneer er in die rij minder macroblokken aanwezig zijn, en dat is precies wat
+	we waarnemen in figuur~\ref{fig:3_3:coded_compressed}.
+	
+	\begin{figure}
+            \centering
+
+            \begin{subfigure}{0.4\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{darthvader.png}
+                \caption{}
+                \label{fig:3_3:darthvader}
+            \end{subfigure}
+            \begin{subfigure}{0.4\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{vraag3_3/uncoded_uncompressed.png}
+                \caption{}
+                \label{fig:3_3:uncoded_uncompressed}
+            \end{subfigure}
+
+            \begin{subfigure}{0.4\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{vraag3_3/compressed.png}
+                \caption{}
+                \label{fig:3_3:compressed}
+            \end{subfigure}
+            \begin{subfigure}{0.4\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{vraag3_3/coded_compressed.png}
+                \caption{}
+                \label{fig:3_3:coded_compressed}
+            \end{subfigure}
+
+            \caption{Figuren behorende bij vraag 3.3 (volledige systeem). Deze figuur
+            toont respectievelijk de \emph{darthvader} figuur origineel, ongecodeerd en 
+            ongecomprimeerd, gecomprimeerd met gewone huffman, gecomprimeerd met gewone
+            huffman en kanaalgecodeerd.}
+
+            \label{fig:3_3}
+
+        \end{figure}
 \end{section}
 
 \begin{section}*{Overzicht Matlab bestanden}
