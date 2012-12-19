@@ -17,7 +17,7 @@ classdef vraag3_3
             compressed_canonical_src = Source_Coding.Huffman_encode(darth_vader_reshaped, symbols, codewords_canonical);
             
             uncompressed_canonical = Source_Coding.Huffman_decode(compressed_canonical_src, symbols, codewords_canonical);
-            uncompressed_canonical = vraag3_3.row_to_img(uncompressed_canonical, 2, 2, width);
+            uncompressed_canonical = vraag3_3.row_to_img(uncompressed_canonical, 2, 2, width, height);
             
             figure
             subplot(1, 2, 1);
@@ -51,7 +51,7 @@ classdef vraag3_3
            compressed_src = Source_Coding.Huffman_encode(darth_vader_reshaped, symbols, codewords);
            compressed_rec = FakeChannel.send(p, compressed_src);
            compressed = Source_Coding.Huffman_decode(compressed_rec, symbols, codewords);
-           compressed = vraag3_3.row_to_img(compressed, 2, 2, width);
+           compressed = vraag3_3.row_to_img(compressed, 2, 2, width, height);
            imwrite(~compressed, 'vraag3_3/compressed.bmp', 'bmp');
            
            % Gecomprimeerd (2 x 2 blokken) met canonische Huffman
@@ -60,7 +60,7 @@ classdef vraag3_3
            compressed_canonical_src = Source_Coding.Huffman_encode(darth_vader_reshaped, symbols, codewords_canonical);
            compressed_canonical_rec = FakeChannel.send(p, compressed_canonical_src);
            compressed_canonical = Source_Coding.Huffman_decode(compressed_canonical_rec, symbols, codewords_canonical);
-           compressed_canonical = vraag3_3.row_to_img(compressed_canonical, 2, 2, width);
+           compressed_canonical = vraag3_3.row_to_img(compressed_canonical, 2, 2, width, height);
            imwrite(~compressed_canonical, 'vraag3_3/compressed_canonical.bmp', 'bmp');
             
            % Gecomprimeerd en gecodeerd (met productcode en gewone Huffman)
@@ -68,7 +68,7 @@ classdef vraag3_3
            coded_compressed_rec = FakeChannel.send(p, coded_compressed_src);
            coded_compressed = Channel_Coding.Prod_decode(coded_compressed_rec);
            coded_compressed = Source_Coding.Huffman_decode(coded_compressed, symbols, codewords);
-           coded_compressed = vraag3_3.row_to_img(coded_compressed, 2, 2, width);
+           coded_compressed = vraag3_3.row_to_img(coded_compressed, 2, 2, width, height);
            imwrite(~coded_compressed, 'vraag3_3/coded_compressed.bmp', 'bmp');
            
            % Gecomprimeerd en gecodeerd (met productcode en canonische Huffman)
@@ -76,7 +76,7 @@ classdef vraag3_3
            coded_compressed_canonical_rec = FakeChannel.send(p, coded_compressed_canonical_src);
            coded_compressed_canonical = Channel_Coding.Prod_decode(coded_compressed_canonical_rec);
            coded_compressed_canonical = Source_Coding.Huffman_decode(coded_compressed_canonical, symbols, codewords_canonical);
-           coded_compressed_canonical = vraag3_3.row_to_img(coded_compressed_canonical, 2, 2, width);
+           coded_compressed_canonical = vraag3_3.row_to_img(coded_compressed_canonical, 2, 2, width, height);
            imwrite(~coded_compressed_canonical, 'vraag3_3/coded_compressed_canonical.bmp', 'bmp');
            
            % Output in matlab
@@ -125,9 +125,7 @@ classdef vraag3_3
             end
         end
         
-        function matrix = row_to_img(row, blockheight, blockwidth, width)
-            % Maak array met 2^(blockwidth * blockheight) plaats.
-            height = floor(numel(row)/width) * (blockheight*blockwidth);
+        function matrix = row_to_img(row, blockheight, blockwidth, width, height)
             matrix = zeros(height, width);
             for i = 0:blockheight:(height - blockheight),
                 for j = 0:blockwidth:(width - blockwidth),
