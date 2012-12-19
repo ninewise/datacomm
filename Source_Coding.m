@@ -68,7 +68,7 @@ classdef Source_Coding
             
             N = numel(alphabet);
       
-            sortedlengths = sort(lengths);                           
+            [sortedlengths indices] = sort(lengths);                           
             % Maak canonical huffmancode
             sortedcodewords = cell(1,N);
             sortedcodewords(1,1) = {[0]};
@@ -94,14 +94,7 @@ classdef Source_Coding
             % example: codewords = {[0], [1 1 0], [1 0], [1 1 1]};
             codewords = cell(1, N);
             for i = 1:N
-                for j = 1:N
-                   if(lengths(j) == sortedlengths(i))
-                       codewords(1,i) = sortedcodewords(1,j);
-                       % Truc om deze waarde in het vervolg over te slaan
-                       lengths(j) = -1;
-                       break
-                   end
-                end
+                codewords(indices(i)) = sortedcodewords(i) 
             end
         end
       
