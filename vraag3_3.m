@@ -50,14 +50,15 @@ classdef vraag3_3
            compressed = vraag3_3.row_to_img(compressed, 2, 2, width);
            imwrite(~compressed, 'vraag3_3/compressed.bmp', 'bmp');
            
-            % Gecomprimeerd (2 x 2 blokken) met canonische Huffman
-           codewords_canonical = Source_Coding.create_canonical_codebook(symbols, freqs);
+           % Gecomprimeerd (2 x 2 blokken) met canonische Huffman
+           codelengths = cellfun('length',codewords);
+           codewords_canonical = Source_Coding.create_canonical_codebook(symbols, codelengths);
            compressed_canonical_src = Source_Coding.Huffman_encode(darth_vader_reshaped, symbols, codewords_canonical);
            compressed_canonical_rec = FakeChannel.send(p, compressed_canonical_src);
            compressed_canonical = Source_Coding.Huffman_decode(compressed_canonical_rec, symbols, codewords_canonical);
            compressed_canonical = vraag3_3.row_to_img(compressed_canonical, 2, 2, width);
            imwrite(~compressed_canonical, 'vraag3_3/compressed_canonical.bmp', 'bmp');
-%            
+            
            % Gecomprimeerd en gecodeerd (met productcode en gewone Huffman)
            coded_compressed_src = Channel_Coding.Prod_encode(compressed_src);
            coded_compressed_rec = FakeChannel.send(p, coded_compressed_src);
