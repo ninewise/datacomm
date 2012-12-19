@@ -75,9 +75,31 @@ classdef vraag3_3
            coded_compressed_canonical_src = Channel_Coding.Prod_encode(compressed_canonical_src);
            coded_compressed_canonical_rec = FakeChannel.send(p, coded_compressed_canonical_src);
            coded_compressed_canonical = Channel_Coding.Prod_decode(coded_compressed_canonical_rec);
-           coded_compressed_canonical = Source_Coding.Huffman_decode(coded_compressed_canonical, symbols, codewords);
+           coded_compressed_canonical = Source_Coding.Huffman_decode(coded_compressed_canonical, symbols, codewords_canonical);
            coded_compressed_canonical = vraag3_3.row_to_img(coded_compressed_canonical, 2, 2, width);
            imwrite(~coded_compressed_canonical, 'vraag3_3/coded_compressed_canonical.bmp', 'bmp');
+           
+           % Output in matlab
+           figure
+           subplot(2, 3, 1);
+           title('ongecomprimeerd en ongecodeerd');
+           imshow(~uncoded_uncompressed);
+           
+           subplot(2, 3, 2);
+           title('gecomprimeerd, gewone huffman');
+           imshow(~compressed);
+           
+           subplot(2, 3, 3);
+           title('gecomprimeerd, canonische huffman');
+           imshow(~compressed_canonical);
+           
+           subplot(2, 3, 4);
+           title('gewone huffman, gecodeerd');
+           imshow(~coded_compressed);
+           
+           subplot(2, 3, 5);
+           title('canonische huffman, gecodeerd');
+           imshow(~coded_compressed_canonical);
         end
         
         function row = img_to_row(img, blockheight, blockwidth)
