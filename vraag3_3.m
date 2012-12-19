@@ -9,19 +9,23 @@ classdef vraag3_3
             darth_vader_reshaped = vraag3_3.img_to_row(darth_vader, 2, 2);
             symbols = 0:(length(freqs)-1);
             
+            codewords = Source_Coding.create_codebook(symbols, freqs);
+            codelengths = cellfun('length',codewords);
             
-            codewords_canonical = Source_Coding.create_canonical_codebook(symbols, freqs);
+            
+            codewords_canonical = Source_Coding.create_canonical_codebook(symbols, codelengths);
             compressed_canonical_src = Source_Coding.Huffman_encode(darth_vader_reshaped, symbols, codewords_canonical);
             
             uncompressed_canonical = Source_Coding.Huffman_decode(compressed_canonical_src, symbols, codewords_canonical);
+            uncompressed_canonical = vraag3_3.row_to_img(uncompressed_canonical, 2, 2, width);
             
-            %figure
-            %subplot(1, 2, 1);
-            %imshow(darth_vader);
-            %subplot(1, 2, 2);
-            imshow(uncompressed_canonical);
-            
-            LALA = 'lala';
+            figure
+            subplot(1, 2, 1);
+            imshow(~darth_vader);
+            title('origineel');
+            subplot(1, 2, 2);
+            imshow(~uncompressed_canonical);
+            title('canonisch gedecodeerd');
         end
         
         function [] = main
