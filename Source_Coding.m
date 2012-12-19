@@ -94,7 +94,7 @@ classdef Source_Coding
             % example: codewords = {[0], [1 1 0], [1 0], [1 1 1]};
             codewords = cell(1, N);
             for i = 1:N
-                codewords(indices(i)) = sortedcodewords(i) 
+                codewords(indices(i)) = sortedcodewords(i);
             end
         end
       
