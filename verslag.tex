@@ -127,7 +127,7 @@
         \begin{figure}[h]
             \centering
             \includegraphics[width=\textwidth]{vraag1_3.png}
-            \caption{Gemiddeld aantal codebits per bronsymbool}
+            \caption{Entropie voor macroblokken van grootte 1 tot 10}
             \label{fig:vraag1_3}
         \end{figure}
 
@@ -341,7 +341,7 @@
         deze coset-leiders met de getransponeerde checkmatrix uit de
         vorige vraag en bekomen zo de syndromen.
 
-        \begin{table}
+        \begin{table}[h]
             \centering
             \begin{tabular}{@{}c|c@{}}
                 Syndroom & Coset-leider \\
@@ -406,7 +406,7 @@
         Een grafische voorstelling van deze decodeerfouten vindt u in
         figuur \ref{fig:2_3}.
 
-        \begin{table}
+        \begin{table}[h]
             \centering
             \begin{tabular}{rrr}
                 \textbf{Foutprobabiliteit} &
@@ -468,7 +468,7 @@ De minimale hammingafstand van de product code bedraagt dus 6.
                 &=& 1 - Pr[\text{geen decodeerfout}]^8 \\ 
                 &=& 1 - ((1-p)^{15} + 15p(1-p)^{14})^8
         \end{eqnarray*}
-
+	\newpage
         We simuleren nu coderen en decoderen met productcode voor een
         willekeurige bit-sequentie van 10000 woorden lang en zoeken de
         fouten in vectoren van 88 bits (8 blokken x 11 bits per woord).
@@ -494,7 +494,7 @@ De minimale hammingafstand van de product code bedraagt dus 6.
             voor kans op een decodeerfout bij productcode.}
             \label{tab:2_6}
         \end{table}    
-        \begin{figure}
+        \begin{figure}[h]
             \centering
             \includegraphics[width=0.7\textwidth]{vraag2_6.png}
             \caption{De theoretische en re\"ele kans op een
