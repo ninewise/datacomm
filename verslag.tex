@@ -57,7 +57,7 @@
         wordt het macroblock \texttt{[1 0;0 1]} omgezet naar
         \texttt{1 0 0 1} en krijgt het nummer $9$.
 
-        Met deze frequenties kunnen we de Huffman-boom opstellen. Deze
+        Met deze frequenties kunnen we de Huffmanboom opstellen. Deze
         vindt u in Figuur~\ref{fig:manual_huffman}. Door aan de
         vertakking met het kleinste deelgewicht een nul toe te kennen,
         en een \'e\'en anders, bekomen we de codering in
@@ -144,7 +144,7 @@
 
 	Door \texttt{vraag1\_4.main()} bekomen we het resultaat te zien op figuur \ref{fig:codebits}.
 	Hierop kunnen we het gemiddelde aantal codebits per bronsymbool
-        (gebruikmakend van Huffman-codering) voor macrosymbolen met
+        (gebruikmakend van Huffmancodering) voor macrosymbolen met
         grootte K=1..10 en de bijhorende onder/bovengrens zien.
         \begin{figure}[h]
             \centering
@@ -174,10 +174,10 @@
         grootte \'e\'en is dit niet het geval, maar aangezien we geen
         codewoorden van minder dan \'e\'en bit kunnen toekennen, is dit
         slechts te verwachten. Dit kleine verschil wijst erop dat
-        Huffman-codering een zeer goede broncodering is.
+        Huffmancodering een zeer goede broncodering is.
 
         We vragen ons nu af, of het mogelijk is om de ondergrens te
-        bereiken met huffmancodering. Met andere woorden, wanneer zal
+        bereiken met Huffmancodering. Met andere woorden, wanneer zal
         $H(x) = KE[n]$:
 
         \begin{eqnarray*}
@@ -208,7 +208,7 @@
         \end{eqnarray*}
 
         Aldus hebben we de voorwaarden bepaald, waaronder de
-        Huffman-codering de ondergrens kan bereiken. Nu, omdat de som
+        Huffmancodering de ondergrens kan bereiken. Nu, omdat de som
         van de kansen $p_i$ steeds $1$ zal zijn, zijn beide leden nu
         positief. We bepalen de mogelijke ranges in functie van N.
 
@@ -226,7 +226,7 @@
         heeft uiteraard een diepte van $\log_2 N$ in al zijn paden,
         dus we krijgen als rechterlid $N \log_2 N$.
 
-        Als alle marcowoorden even vaak voorkomen, zal de
+        Als alle macrosymbolen even vaak voorkomen, zal de
         Huffmancodering dus steeds optimaal zijn. Er zijn natuurlijk
         ook nog andere gevallen.
 
