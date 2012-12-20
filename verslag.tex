@@ -176,7 +176,58 @@
         slechts te verwachten. Dit kleine verschil wijst erop dat
         Huffman-codering een zeer goede broncodering is.
 
-        % TODO: Optimaal? Voorwaarden?
+        We vragen ons nu af, of het mogelijk is om de ondergrens te
+        bereiken met huffmancodering. Met andere woorden, wanneer zal
+        $H(x) = E[n]$:
+
+        \begin{eqnarray*}
+            H(x) = E[n]
+            & \Leftrightarrow & - \sum_{x \in A}{p(x) \log_2{p(x)}}
+                = \frac{1}{K} \sum_{i = 1}^{N}{p_i n_i}
+        \end{eqnarray*}
+
+        Nu zal de verzameling $A$ die van alle macrowoorden zijn,
+        wat ons brengt tot:
+
+        \begin{eqnarray*}
+            H(x) = E[n]
+            & \Leftrightarrow & - \sum_{i = 1}^{N}{p_i \log_2{p_i}}
+                = \frac{1}{K} \sum_{i = 1}^{N}{p_i n_i} \\
+            & \Leftrightarrow & \sum_{i = 1}^{N}(p_i \log_2{p_i}
+                + \frac{p_i n_i}{K}) = 0 \\
+            & \Leftrightarrow & \sum_{i = 1}^{N}(
+                \frac{K p_i \log_2{p_i} + p_i n_i}{K}) = 0 \\
+            & \Leftrightarrow & \sum_{i = 1}^{N}(K \log_2{p_i} + n_i)
+                = 0
+        \end{eqnarray*}
+
+        De enige term die hierin negatief kan zijn, is het logaritme.
+        Bijgevolg:
+
+        \begin{eqnarray*}
+            H(x) = E[n] & \Leftrightarrow &
+            \sum_{i = 1}^{N}K \log_2{p_i} = - \sum_{i = 1}^{N} n_i
+            \\ & \Leftrightarrow &
+            K \log_2 {\prod_{i = 1}^{N}{\frac{1}{p_i}}}
+                = \sum_{i = 1}^{N} n_i
+        \end{eqnarray*}
+
+        Aldus hebben we de voorwaarden bepaald, waaronder de
+        Huffman-codering de ondergrens kan bereiken. Nu, omdat de som
+        van de kansen $p_i$ steeds $1$ zal zijn, zijn beide leden nu
+        positief. We plotten de mogelijke ranges in functie van N.
+
+        De minimale waarde van het linkerlid wordt bereikt wanneer het
+        product minimaal is, en dat is wanneer alle $p_i$ even groot
+        zijn. Formule: $\min(LL) = K \log_2{N^N} = KN \log_2{N}$.
+
+        De maximale waarde voor het linkerlid is uiteraard oneindig,
+        als \'e\'en van de woorden niet voorkomt: $ \max(LL) =
+        K log_2{0} = \infty $.
+
+        We vragen ons dus af of er N  $n_i$ bestaan, die door
+        Huffman-codering gegenereerd kunnen worden, en waarvoor geldt
+        dat $$ \sum_{i = 1}^{N}{n_i} \ge KN \log_2{N} $$.
 
     \end{subsection}
 
@@ -267,12 +318,15 @@
         \end{eqnarray*}
 
         Als de matrices bekomen we:
-        \begin{eqnarray*}
-            G &=&\input{vraag2_1/generatormatrix.tex}\\
-            H &=&\input{vraag2_1/checkmatrix.tex}\\
-            G_{sys} &=&\input{vraag2_1/syst_generatormatrix.tex}\\
-            H_{sys} &=&\input{vraag2_1/syst_checkmatrix.tex}
-        \end{eqnarray*}
+        \[
+            G =\input{vraag2_1/generatormatrix.tex}\\
+        \]\[
+            H =\input{vraag2_1/checkmatrix.tex}\\
+        \]\[
+            G_{sys} =\input{vraag2_1/syst_generatormatrix.tex}\\
+        \]\[
+            H_{sys} =\input{vraag2_1/syst_checkmatrix.tex}
+        \]
 
     \end{subsection}
 
