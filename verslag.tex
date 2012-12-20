@@ -219,15 +219,40 @@
 
         De minimale waarde van het linkerlid wordt bereikt wanneer het
         product minimaal is, en dat is wanneer alle $p_i$ even groot
-        zijn. Formule: $\min(LL) = K \log_2{N^N} = KN \log_2{N}$.
+        zijn. Formule: $\min(LL) = K \log_2{N^N} = KN \log_2{N}$. De
+        maximale waarde voor het linkerlid is uiteraard oneindig, als
+        \'e\'en van de woorden niet voorkomt: $ \max(LL) = K*log_2{0}
+        = \infty $.
 
-        De maximale waarde voor het linkerlid is uiteraard oneindig,
-        als \'e\'en van de woorden niet voorkomt: $ \max(LL) =
-        K log_2{0} = \infty $.
+        Als we nu eens enkele eenvoudige gevallen voor het rechterlid
+        bekijken:
 
-        We vragen ons dus af of er N  $n_i$ bestaan, die door
-        Huffman-codering gegenereerd kunnen worden, en waarvoor geldt
-        dat $$ \sum_{i = 1}^{N}{n_i} \ge KN \log_2{N} $$.
+        \begin{itemize}
+            \item We kunnen bijvoorbeeld alle macrowoorden van gelijke
+                frequentie nemen. Dan bekomen we een complete binaire
+                boom als Huffmanboom. Deze heeft uiteraard een diepte
+                van $\log_2 N$ in al zijn paden, dus we krijgen als
+                rechterlid $N \log_2 N$.
+
+                In dit geval zal de Huffmancode enkel optimaal zijn als
+                $K$ gelijk is aan 1. Natuurlijk is 1 een vrij
+                belachelijke waarde voor K.
+            \item We kunnen ook werken met $n_1 = 1$ en $(\forall i>1)
+                (n_i = 2^{i-1})$. De gevormde boom zal eerst $n_1$ en
+                $n_2$ samennemen, en dan telkens alle voorgaande, en
+                een nieuw getal. Zodanig zullen de paden naar de toppen
+                alle natuurlijke getallen tot $N$ bevatten. Hun som
+                moet dan groter zijn dan ons linkerlid:
+                \begin{eqnarray*}
+                    N + \frac{N(N+1)}{2} \ge K N \log_2 N
+                    \\ & \Leftrightarrow &
+                    N^2 + 3N \ge 2KN \log_2 N
+                    \\ & \Leftrightarrow &
+                    N + 3 \ge 2K \log_2 N
+                \end{eqnarray*}
+                Uiteraard zal K meestal zeer groot zijn, maar voor
+                grotere alfabetten zal de Huffmancode optimaal blijken.
+        \end{itemize}
 
     \end{subsection}
 

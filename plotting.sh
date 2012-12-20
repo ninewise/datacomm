@@ -25,5 +25,16 @@ set xlabel "Kans op bitflip in het kanaal"
 set ylabel "Relatieve frequentie decodeerfouten"
 plot "vraag2_6/prod_simulaties.csv" using 1:2 with linespoints title "theoretisch", \
      "vraag2_6/prod_simulaties.csv" using 1:3 with linespoints title "praktisch"
+
+unset logscale
+
+set output "vraag1_5.png"
+set xlabel "Grootte alfabet"
+set xrange [1:25]
+plot x + 3 title "N + 3", \
+     2 * log(x) title "K = 1", \
+     4 * log(x) title "K = 2", \
+     6 * log(x) title "K = 3", \
+     8 * log(x) title "K = 4"
 HERE
 
