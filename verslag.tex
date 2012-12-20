@@ -1,7 +1,6 @@
 \documentclass[]{article}
 \usepackage[a4paper]{geometry}
 \usepackage[dutch]{babel}
-
 % Floating figuren.
 \usepackage{graphicx}
 
@@ -9,8 +8,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 
-% Commented, want we gebruiken dit eigenlijk niet?
-%\usepackage{titling}
+\usepackage{titling}
 
 % Om code en dergelijke te plaatsen.
 \usepackage{listings}
@@ -27,6 +25,7 @@
 % Ik vind het nu eenmaal mooier zo.
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{14pt}
+\setlength{\droptitle}{-9em}
 
 \title{Project Datacommunicatie}
 \author{Enver Bral \\
@@ -38,7 +37,6 @@
 \begin{document}
 
 \maketitle
-
 \begin{section}*{Broncodering}
 
     \begin{subsection}*{Vraag 1}
@@ -55,7 +53,7 @@
 
         Dit zijn de relatieve frequenties voor elk macroblok. De
         macroblokken zijn hier als volgt genummerd: We zetten de rijen
-        van het macroblok na elkaar, en lezen als een binair getal.  Zo
+        van het macroblok na elkaar, en lezen ze als een binair getal.  Zo
         wordt het macroblock \texttt{[1 0;0 1]} omgezet naar
         \texttt{1 0 0 1} en krijgt het nummer $9$.
 
@@ -144,9 +142,10 @@
 
     \begin{subsection}*{Vraag 4}
 
-        We verkrijgen volgende grafiek bij het uitvoeren van
-        \texttt{vraag1\_4.main()}:
-
+	Door \texttt{vraag1\_4.main()} bekomen we het resultaat te zien op figuur \ref{fig:codebits}.
+	Hierop kunnen we het gemiddelde aantal codebits per bronsymbool
+        (gebruikmakend van Huffman-codering) voor macrosymbolen met
+        grootte K=1..10 en de bijhorende onder/bovengrens zien.
         \begin{figure}[h]
             \centering
             \includegraphics[width=\textwidth]{vraag1_4.png}
@@ -154,11 +153,7 @@
             \label{fig:codebits}
         \end{figure}
 
-        Hierop kunnen we het gemiddelde aantal codebits per bronsymbool
-        (gebruikmakend van Huffman-codering) voor macrosymbolen met
-        grootte K=1..10 en de bijhorende onder/bovengrens zien.
-
-        Als ondergrens nemen we de entropie van een bronsymbool.
+        Als ondergrens nemen we de entropie van een bronsymbool
         \textbf{H(X)} en als bovengrens nemen we
         $\mathbf{H(X) +\frac{1}{K}}$.
 
@@ -245,7 +240,7 @@
     \end{subsection}
 
 \end{section}
-
+\newpage
 \begin{section}*{Kanaalcodering}
 
     \begin{subsection}*{Vraag 1}
@@ -440,9 +435,8 @@
             \caption{Vergelijking analytische met gemeten resultaat
             voor kans op een decodeerfout bij productcode.}
             \label{tab:2_6}
-        \end{table}
-        
-        \begin{figure}[h]
+        \end{table}    
+        \begin{figure}
             \centering
             \includegraphics[width=0.7\textwidth]{vraag2_6.png}
             \caption{De theoretische en re\"ele kans op een
@@ -470,30 +464,27 @@
         willekeurig over de figuur verdeeld zijn. Daaruit kunnen we
         afleiden dat elk woord een even grote kans maakt om verkeerd
         ontvangen te worden.
-
-        \begin{figure}
+        \begin{figure}[h]
             \centering
-
-            \begin{subfigure}{0.4\textwidth}
+            \begin{subfigure}{0.24\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{darthvader.png}
                 \caption{}
                 \label{fig:darthvader}
             \end{subfigure}
-            \begin{subfigure}{0.4\textwidth}
+            \begin{subfigure}{0.24\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{uncoded.png}
                 \caption{}
                 \label{fig:uncoded}
             \end{subfigure}
-
-            \begin{subfigure}{0.4\textwidth}
+            \begin{subfigure}{0.24\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{ham_coded.png}
                 \caption{}
                 \label{fig:ham_coded}
             \end{subfigure}
-            \begin{subfigure}{0.4\textwidth}
+            \begin{subfigure}{0.24\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{prod_coded.png}
                 \caption{}
@@ -509,14 +500,12 @@
             \label{fig:2_7}
 
         \end{figure}
-
-    \end{subsection}
-
+    \end{subsection} 
 \end{section}
-
+\clearpage
 \begin{section}*{Volledig systeem} % Enver
 
-	De resultaten van het doorsturen van de figuur over kanaal zijn te zien
+	De resultaten van het doorsturen van de figuur over het kanaal zijn te zien
 	in figuur~\ref{fig:3_3}.
 	
 	\par
@@ -590,7 +579,7 @@
                 \label{fig:3_3:coded_compressed}
             \end{subfigure}
 
-            \caption{Figuren behorende bij vraag 3.3 (volledige systeem). Deze figuur
+            \caption{Figuren behorende bij vraag 3 (volledig systeem). Deze figuur
             toont respectievelijk de \emph{darthvader} figuur origineel, ongecodeerd en 
             ongecomprimeerd, gecomprimeerd met gewone huffman, gecomprimeerd met gewone
             huffman en kanaalgecodeerd.}
@@ -599,7 +588,7 @@
 
         \end{figure}
 \end{section}
-
+\clearpage
 \begin{section}*{Overzicht Matlab bestanden}
 \begin{itemize}
     \item \texttt{FakeChannel.m} : Bevat code om een kanaal dat fouten
@@ -607,22 +596,30 @@
         om de verschillende onderdelen te testen.
     \item \texttt{FrequencyCounter.m} : Bepaalt de frequenties van
         macroblokken in een afbeelding.
-    \item \texttt{Vraag1\_3.m} :
+    \item \texttt{Vraag1\_3.m} : Geeft entropie voor macroblokken van grootte K=1..10.
     \item \texttt{Vraag1\_4.m} : Stelt Huffmancode op voor macroblokken
         van grootte K=1..10 en berekent het gemiddeld aantal
         codebits/bronsymbool met ondergrens en bovengrens. Geeft beste
         compressiefactor en de bijhorende K terug.
-    \item \texttt{Vraag2\_1.m} :
+    \item \texttt{Vraag2\_1.m} : Stelt de generator- en checkmatrices op, 
+    	alsook hun systematische versies. 
+    	Heeft ook een functie om de binaire notaties te genereren van 
+    	de eerste $2^n$ getallen en een functie om de minimale 
+    	Hamming-afstand te bepalen.
     \item \texttt{Vraag2\_2.m} : Maakt syndroomtabel aan. Heeft zowel
         de eenvoudige manier, als de manier waarbij we eerst de
         decodeertabel opstellen.
-    \item \texttt{Vraag2\_3.m} :
+    \item \texttt{Vraag2\_3.m} :  Simuleer het versturen van bits over
+        een kanaal met bitfoutprobabiliteit $p$ en met hammingcode
+        codering.
     \item \texttt{Vraag2\_6.m} : Simuleer het versturen van bits over
         een kanaal met bitfoutprobabiliteit $p$ en met productcode
         codering.
     \item \texttt{Vraag2\_7.m} : Simuleert het verzenden van de
         \texttt{darthvader.bmp} afbeelding over een transmissiekanaal
         met een kans op bitflips.
+     \item \texttt{Vraag3\_3.m} : Simuleert het volledig systeem met de 3
+        verschillende manieren die gevraagd werden in sectie 3.
 \end{itemize}
 \end{section}
 
