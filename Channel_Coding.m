@@ -1,9 +1,19 @@
 classdef Channel_Coding
           
-   methods(Static=true)
+    methods(Static=true)
+        
+        function bitenc = Ham_encode(bitstring)
+            n = 15; k = 11; generator = [1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];
+            [infobits, ~]=vraag2_1.genereerInformatieBits(k);
+            [codewoorden, ~] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
+            indices = cell2mat(cellfun(@(i){bi2de(i') + 1}, num2cell(infobits', 1)));
+            cwoorden(indices, :) = codewoorden(1:length(indices), :);
+            
+            bitenc = Channel_Coding.Ham_encode_internal(bitstring, cwoorden);
+        end
         
         % Functies voor Hamming codering
-        function bitenc = Ham_encode(bitstring)
+        function bitenc = Ham_encode_internal(bitstring, cwoorden)
             % Functie die een bitstring encodeerd met de (11,15) Hamming code.
             % input:
             % bitstring: vector van ongecodeerde bits met lengte 1xN
@@ -16,51 +26,14 @@ classdef Channel_Coding
             % door een geheel aantal codewoorden
             bitstring = [bitstring zeros(1, N_codewords*11-N)];
 
-% Enver: dit werkte voor mij, geen tijd om de nieuwe code te testen
-% (must get sleep -_-)
-%             generator_matrix = [
-%                 1 0 0 0 0 0 0 0 0 0 0 1 1 0 0 ;
-%                 0 1 0 0 0 0 0 0 0 0 0 0 1 1 0 ;
-%                 0 0 1 0 0 0 0 0 0 0 0 0 0 1 1 ;
-%                 0 0 0 1 0 0 0 0 0 0 0 1 1 0 1 ; 
-%                 0 0 0 0 1 0 0 0 0 0 0 1 0 1 0 ;
-%                 0 0 0 0 0 1 0 0 0 0 0 0 1 0 1 ;
-%                 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 ;
-%                 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 ; 
-%                 0 0 0 0 0 0 0 0 1 0 0 1 1 1 1 ;
-%                 0 0 0 0 0 0 0 0 0 1 0 1 0 1 1 ;
-%                 0 0 0 0 0 0 0 0 0 0 1 1 0 0 1 ;   
-%             ];
-%        
-%             % Plaats de verschillende informatiewoorden op verschillende
-%             % rijen
-%             info_words = reshape(bitstring, [], N_codewords)';
-%             
-%             % Vervang elke rij (elk informatiewoord)
-%             % door zijn codewoord
-%             for i = 1:N_codewords
-%                 bitenc(i,:) = info_words(i,:) * generator_matrix;
-%             end
-%
-%             % zet alles terug op 1 rij
-%             bitenc = reshape(bitenc', 1, [])
-
             % De bitstring in informatiewoorden splitsen. Nu is elke rij van de
             % matrix bitmatrix een informatiewoord, en kunnen we de
             % oorspronkelijke string lezen volgens de normale leesrichting.
             bitmatrix = vec2mat(bitstring, 11);
 
-            % Door de (N_codewords x 11) bitmatrix te vermenigvuldigen met de
-            % (11 x 15) generatormatrix, bekomen we een gelijkvormige matrix,
-            % maar dan nu met codewoorden.
-            persistent n k generator infobits codewoorden;
-            if isempty(n)
-                n = 15; k = 11; generator = [1 1 0 0 1 0 0 0 0 0 0 0 0 0 0];
-                [infobits, ~]=vraag2_1.genereerInformatieBits(k);
-                [codewoorden, ~] = vraag2_1.genereerCodeWoorden(n, k, infobits, generator);
-            end
-            x = cellfun(@(i){codewoorden(ismember(infobits, i', 'rows'),:)}, num2cell(bitmatrix', 1));
-            matrixenc = cell2mat(x);
+            % We vervangen elk informatiewoord door zijn codewoord, door
+            % het op te zoeken in de meegekregen matrix.
+            matrixenc = cell2mat(cellfun(@(i){cwoorden(bi2de(i') + 1, :)}, num2cell(bitmatrix', 1)));
                        
             % Nu moeten we gewoon nog de matrix matrixend lezen, en we bekomen
             % onze bitenc.
