@@ -285,7 +285,7 @@ classdef Channel_Coding
                     p_start=(blok-1)*dec_blok_lengte+(i-1)*n+1;
                     p_endd=(blok-1)*dec_blok_lengte+i*n;
                     %bit_pdec(p_start:p_endd)
-                    bitdec(dec_start:dec_endd)=Channel_Coding.Ham_decode_internal(bit_pdec(p_start:p_endd), syst_checkmatrix, cleaders_array, info_array);
+                    bitdec(dec_start:dec_endd)=Channel_Coding.Ham_decode_internal(bit_pdec(p_start:p_endd), syst_checkmatrix, cleader_array, info_array);
                 end
             end
         end
