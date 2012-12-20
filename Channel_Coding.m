@@ -1,4 +1,4 @@
-classdef Channel_Coding
+classdef Channel_Coding_new
           
    methods(Static=true)
         
@@ -87,6 +87,8 @@ classdef Channel_Coding
             syndromes = mod(matrixenc * transpose(syst_checkmatrix), 2);
 
             % Nu zoeken we elk syndroom op in de coset_leaders matrix.
+            % Hiervoor sorteren we eerst de syndroomtabel, waardoor we de
+            % cosetleiders kunnen opvragen met de syndromen als index.      
             x = cellfun(@(i){cleaders(ismember(s, i', 'rows'),:)}, num2cell(syndromes', 1));
             transmission_errors = cell2mat(x');
             
@@ -95,8 +97,9 @@ classdef Channel_Coding
             
             % Dan rest ons slechts het omzetten van die codewoorden in hun
             % informatiewoorden:
-            y = cellfun(@(i){infobits(ismember(codewoorden, i', 'rows'),:)}, num2cell(codewords', 1));
-            bitdec = cell2mat(y);
+            indices = cell2mat(cellfun(@(i){bi2de(i')}, num2cell(codewoorden', 1)));
+            info_array(indices + 1, :) = infobits(1:length(codewoorden), :);
+            bitdec = cell2mat(cellfun(@(i){info_array(bi2de(i') + 1, :)}, num2cell(codewords', 1)));
         end
 
         function bitdec = Ham_decode(bitenc)
@@ -112,7 +115,7 @@ classdef Channel_Coding
             syst_checkmatrix=vraag2_1.genereerSystCheckMatrix(n, k, syst_generatormatrix);
             [s, cleaders] = vraag2_2.genereerSyndroomTabelImproved(n, syst_checkmatrix);          
 
-            bitdec = Channel_Coding.Ham_decode_internal(bitenc, syst_checkmatrix, infobits, codewoorden, cleaders, s);
+            bitdec = Channel_Coding_new.Ham_decode_internal(bitenc, syst_checkmatrix, infobits, codewoorden, cleaders, s);
             % output: de gedecodderde bits: lengte 11*N_codewords
         end
         
